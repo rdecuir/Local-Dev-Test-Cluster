@@ -6,7 +6,7 @@ metadata:
 spec:
   project: example-project                        # Reference to your AppProject
   source:
-    repoURL: https://github.com/my-org/infrastructure
+    repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
     path: apps/helm-charts/goldilocks
     targetRevision: main
     helm:
