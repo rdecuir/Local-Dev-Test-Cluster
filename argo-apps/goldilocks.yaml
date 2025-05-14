@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: golidlocks
+  namespace: argocd
+spec:
+  project: example-project                        # Reference to your AppProject
+  source:
+    repoURL: https://charts.fairwinds.com/stable  # External Helm repo
+    chart: goldilocks                             # Chart name
+    targetRevision: v4.13.0                       # Chart version
+    helm:
+      valueFiles:
+        - apps/golidlocks/values.yaml             # Relative to repo root where this manifest lives
+  destination:
+    server: https://kubernetes.default.svc        # In-cluster Kubernetes API
+    namespace: goldilocks                         # Target namespace for the app
+  syncPolicy:
+    automated:
+      prune: true                                # Delete resources no longer defined
+      selfHeal: true                             # Reapply if drift is detected
+    syncOptions:
+      - CreateNamespace=true     
