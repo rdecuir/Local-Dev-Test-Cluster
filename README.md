@@ -24,9 +24,15 @@
 
 ---
 
-## Installing Argocd
+## Installing Argocd (Working, Need to fix issue with not auto deploying)
 1. `kubectl create namespace argocd`
 
 1. `kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`
 
 1. `k apply -n argocd -f project.yaml` 
+
+1. `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+
+1. `kubectl port-forward -n argocd svc/argocd-server 8080:443`
+
+h8LX6n5RhyX9Rmbc

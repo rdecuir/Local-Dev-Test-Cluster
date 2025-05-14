@@ -11,3 +11,7 @@
 1. `k label ns goldilocks goldilocks.fairwinds.com/enabled=true`
 
 1. `k label ns nginx goldilocks.fairwinds.com/enabled=true`
+
+## Deploying by way of argo (For Now)
+1. Initial argocd start up
+1. `k apply -f argo-apps/goldilocks.yaml`
