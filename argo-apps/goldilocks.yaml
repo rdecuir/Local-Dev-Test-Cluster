@@ -6,12 +6,12 @@ metadata:
 spec:
   project: example-project                        # Reference to your AppProject
   source:
-    repoURL: https://charts.fairwinds.com/stable  # External Helm repo
-    chart: goldilocks                             # Chart name
-    targetRevision: 9.0.2                       # Chart version
-    helm:
-      valueFiles:
-        - apps/helm-charts/goldilocks/values.yaml             # Relative to repo root where this manifest lives
+  repoURL: https://github.com/my-org/infrastructure
+  path: apps/helm-charts/goldilocks
+  targetRevision: main
+  helm:
+    valueFiles:
+      - values.yaml
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
     namespace: goldilocks                         # Target namespace for the app
