@@ -21,3 +21,12 @@
 ## Configure and Run
 1. RUN IT `k3d cluster create --config local-k3d.yaml`
 1. KILL IT `k3d cluster delete --config local-k3d.yaml`
+
+---
+
+## Installing Argocd
+1. `kubectl create namespace argocd`
+
+1. `kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`
+
+1. `k apply -n argocd -f project.yaml` 

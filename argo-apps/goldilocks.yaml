@@ -8,10 +8,10 @@ spec:
   source:
     repoURL: https://charts.fairwinds.com/stable  # External Helm repo
     chart: goldilocks                             # Chart name
-    targetRevision: v4.13.0                       # Chart version
+    targetRevision: 9.0.2                       # Chart version
     helm:
       valueFiles:
-        - apps/golidlocks/values.yaml             # Relative to repo root where this manifest lives
+        - apps/helm-charts/goldilocks/values.yaml             # Relative to repo root where this manifest lives
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
     namespace: goldilocks                         # Target namespace for the app
