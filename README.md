@@ -31,6 +31,8 @@
 
 1. `k apply -n argocd -f argo-apps/project.yaml` 
 
+1. `k apply -n argocd -f argo-apps/root-app.yaml`
+
 1. `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 
 1. `kubectl port-forward -n argocd svc/argocd-server 8080:443`
