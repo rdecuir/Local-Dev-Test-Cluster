@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: argocd.localhost
+    - host: argocd.local
       http:
         paths:
           - path: /
