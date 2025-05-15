@@ -7,6 +7,14 @@ vpa:
   updater:
     # updater.enabled -- If true, the vpa-updater will be installed as a sub-chart
     enabled: false # This disables the updater so only vpa recommender is installed
+
+  # Guessing but I think there is the following TODO look this up in their vpa chart values file/repo
+  # recommender:
+  #   enabled: true # default
+  #   extraArgs:
+  #     prometheus-address: http://prometheus-server.kube-system.svc.cluster.local:9090
+  #     storage: prometheus
+
     
 metrics-server:
   # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
