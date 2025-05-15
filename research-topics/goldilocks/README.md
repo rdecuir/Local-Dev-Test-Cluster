@@ -24,3 +24,8 @@ Whats is Goldilocks:
 1. `kubectl port-forward -n goldilocks svc/goldilocks-dashboard 4433:80`
 1. Add label and check that a vpa has be created for defined namespace to monitor the workloads in that name space (Workload=Deployment/StatefulSets/DaemonSet)
 1. NOTE: Understand that once a label is added to a namespace, it does take a bit to build te initial recommendations
+
+## Side Note
+Fairwinds also has some other tools, Nova for instance finds old helm charts and container images, and shows the latest patches and versions.
+
+https://nova.docs.fairwinds.com/#join-the-fairwinds-open-source-community
