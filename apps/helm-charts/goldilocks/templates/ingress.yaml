@@ -17,5 +17,3 @@ spec:
         backend:
           service:
             name: goldilocks-dashboard
-            port:
-              number: 8080
