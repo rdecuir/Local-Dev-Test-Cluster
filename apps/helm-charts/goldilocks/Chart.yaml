@@ -9,3 +9,7 @@ dependencies:
   - name: goldilocks
     version: 9.0.2
     repository: https://charts.fairwinds.com/stable
+  - name: vpa
+    version: 4.5.*
+    repository: https://charts.fairwinds.com/stable
+    condition: vpa.enabled
