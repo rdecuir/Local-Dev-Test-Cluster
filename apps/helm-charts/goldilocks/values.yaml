@@ -149,8 +149,6 @@ dashboard:
   ingress:
     enabled: true
     ingressClassName: traefik
-    annotations:
-      kubernetes.io/ingress.class: traefik
     hosts:
       - host: goldilocks.local
         paths:
