@@ -23,7 +23,7 @@ Whats is Goldilocks:
 1. `k apply -f argo-apps/goldilocks.yaml`
 1. `kubectl port-forward -n goldilocks svc/goldilocks-dashboard 4433:80`
 1. Add label and check that a vpa has be created for defined namespace to monitor the workloads in that name space (Workload=Deployment/StatefulSets/DaemonSet)
-1. NOTE: Understand that once a label is added to a namespace, it does take a bit to build te initial recommendations
+1. NOTE: Understand that once a label is added to a namespace, it does take a bit to build te initial recommendations. Full recommendations take about 8 days, or you can connect to prometheus. (vpa-kuberenetes/autoscaler/vertical-pod-autoscaler/pkg/recommender/main.go)
 
 ## Side Note
 Fairwinds also has some other tools, Nova for instance finds old helm charts and container images, and shows the latest patches and versions.
