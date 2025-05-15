@@ -18,4 +18,4 @@ spec:
           service:
             name: goldilocks-dashboard
             port:
-              name: http
+              port: 8080
