@@ -5,9 +5,8 @@ vpa:
   # vpa.enabled -- If true, the vpa will be installed as a sub-chart
   enabled: true
   updater:
-    # updater.enabled -- If true, the vpa-updater will be installed as a sub-chart
-    enabled: false # This disables the updater so only vpa recommender is installed
-    
+    enabled: false
+
 metrics-server:
   # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
   enabled: false
