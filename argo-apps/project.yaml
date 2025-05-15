@@ -1,13 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: example-project
+  name: default
   namespace: argocd
 spec:
   description: Project for deploying Helm charts
   sourceRepos:
-    - https://github.com/rdecuir/Local-Dev-Test-Cluster
-    - https://charts.fairwinds.com/stable
+    - "*"
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc

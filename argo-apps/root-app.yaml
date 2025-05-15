@@ -1,17 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: goldilocks
+  name: apps
   namespace: argocd
 spec:
-  project: default                      # Reference to your AppProject
+  project: default                       # Reference to your AppProject
   source:
-    repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-    path: apps/helm-charts/goldilocks
+    repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster.git
     targetRevision: main
-    helm:
-      valueFiles:
-        - values.yaml
+    path: argo-apps
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
     namespace: goldilocks                         # Target namespace for the app

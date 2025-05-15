@@ -15,3 +15,4 @@
 ## Deploying by way of argo (For Now)
 1. Initial argocd start up
 1. `k apply -f argo-apps/goldilocks.yaml`
+1. `kubectl port-forward -n goldilocks svc/goldilocks-dashboard 4433:80`
