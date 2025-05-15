@@ -146,17 +146,16 @@ dashboard:
     # dashboard.deployment.podAnnotations -- Extra annotations for the dashboard pod
     podAnnotations: {}
 
-ingress:
-  enabled: true
-  ingressClassName: traefik
-  annotations:
-    kubernetes.io/ingress.class: traefik
-  hosts:
-    - host: goldilocks.local
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      kubernetes.io/ingress.class: traefik
+    hosts:
+      - host: goldilocks.local
+        paths:
+          - path: /
+            pathType: Prefix
 
   # dashboard.resources -- A resources block for the dashboard.
   resources:
