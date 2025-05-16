@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: goldilocks.local
+  - host: goldilocks.localhost
     http:
       paths:
       - path: /

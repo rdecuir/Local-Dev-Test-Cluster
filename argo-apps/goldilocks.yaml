@@ -5,13 +5,23 @@ metadata:
   namespace: argocd
 spec:
   project: default                      # Reference to your AppProject
-  source:
-    repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-    path: apps/helm-charts/goldilocks
-    targetRevision: main
-    helm:
-      valueFiles:
-        - values.yaml
+  sources:
+    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+      path: apps/helm-charts/goldilocks
+      targetRevision: main
+      ref: values
+      helm:
+        valueFiles:
+          - values.yaml
+
+    - repoURL: https://charts.fairwinds.com/stable
+      chart: goldilocks
+      targetRevision: 9.0.2
+
+    - repoURL: https://charts.fairwinds.com/stable
+      chart: vpa
+      targetRevision: 4.5.*
+
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
     namespace: goldilocks                         # Target namespace for the app

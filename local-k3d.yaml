@@ -4,6 +4,9 @@ name: test-cluster # (will still be prefixed with `k3d-`)
 servers: 1
 agents: 3
 ports:
-  - port: 8080:80
+  - port: 80:80
+    nodeFilters:
+      - loadbalancer
+  - port: 443:443
     nodeFilters:
       - loadbalancer
