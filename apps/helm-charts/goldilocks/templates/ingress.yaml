@@ -9,13 +9,13 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: goldilocks.localhost
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: goldilocks-dashboard
-            port:
-              number: 80
+    - host: goldilocks.localhost
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: goldilocks-dashboard
+              port:
+                number: 80
