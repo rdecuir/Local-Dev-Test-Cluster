@@ -4,7 +4,10 @@ metadata:
   name: goldilocks
   namespace: argocd
 spec:
-  project: default                      # Reference to your AppProject
+  project: default                                # Reference to your AppProject
+  destination:
+    server: https://kubernetes.default.svc        # In-cluster Kubernetes API
+    namespace: goldilocks                         # Target namespace for the app
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
@@ -32,10 +35,6 @@ spec:
     - repoURL: https://charts.fairwinds.com/stable
       chart: vpa
       targetRevision: 4.5.*
-
-  destination:
-    server: https://kubernetes.default.svc        # In-cluster Kubernetes API
-    namespace: goldilocks                         # Target namespace for the app
   syncPolicy:
     automated:
       prune: true                                # Delete resources no longer defined
