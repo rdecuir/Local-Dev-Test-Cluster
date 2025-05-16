@@ -7,12 +7,23 @@ spec:
   project: default                      # Reference to your AppProject
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-      path: apps/helm-charts/goldilocks
       targetRevision: main
       ref: values
       helm:
         valueFiles:
-          - values.yaml
+          - apps/helm-charts/goldilocks/values.yaml
+        valuesObject:
+          ingress:
+            enabled: true
+            path: /
+            hosts:
+              - goldilocks.localhost
+            service:
+              name: goldilocks-dashboard
+              port: 80
+            annotations:
+              kubernetes.io/ingress.class: traefik
+              traefik.ingress.kubernetes.io/router.entrypoints: web
 
     - repoURL: https://charts.fairwinds.com/stable
       chart: goldilocks
