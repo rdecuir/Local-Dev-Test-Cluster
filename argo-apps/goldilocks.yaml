@@ -8,36 +8,41 @@ spec:
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
     namespace: goldilocks                         # Target namespace for the app
+  
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
       ref: values
-      helm:
-        valueFiles:
-          - apps/helm-charts/goldilocks/values.yaml
-        valuesObject:
-          ingress:
-            enabled: true
-            path: /
-            hosts:
-              - goldilocks.localhost
-            service:
-              name: goldilocks-dashboard
-              port: 80
-            annotations:
-              kubernetes.io/ingress.class: traefik
-              traefik.ingress.kubernetes.io/router.entrypoints: web
-
+    # path: apps/helm-charts/goldilocks/templates # test this to allow templates in an app container folder 
+      
     - repoURL: https://charts.fairwinds.com/stable
       chart: goldilocks
       targetRevision: 9.0.2
+      helm:
+        valueFiles:
+          - apps/helm-charts/goldilocks/values.yaml
 
     - repoURL: https://charts.fairwinds.com/stable
       chart: vpa
       targetRevision: 4.5.*
+      helm:
+        valueFiles:
+          - apps/helm-charts/goldilocks/values.yaml
+
+    # Helper "config(manifest needed on top of charts), or custom-charts(templates)"
+    - path: apps/helm-charts/goldilocks/templates/ingress.yaml
+      repoURL:
+      targetRevision: 
+      # section for templated custom-charts
+      # helm:
+      #   valuesObject:
+
   syncPolicy:
-    automated:
-      prune: true                                # Delete resources no longer defined
-      selfHeal: true                             # Reapply if drift is detected
+    # automated:
+    #   prune: true                                # Delete resources no longer defined
+    #   selfHeal: true                             # Reapply if drift is detected
     syncOptions:
-      - CreateNamespace=true     
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true

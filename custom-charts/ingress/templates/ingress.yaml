@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ required "ingress name is required" .Values.name }}
+  # namespace: # since used by Application then this deployed where ever the Application is deployed
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: {{ .Values.router.entrypoints | default "web" }}
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: {{ .Values.hostname | default .Values.name }}.localhost
+      http:
+        paths:
+        - path: {{ .Values.path | default "/" }}
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ .Values.service | default .Values.name }}
+              {{- with .Values.port }}
+              port:
+                {{- toYaml . | nindent 18 }}
+              {{- end }}
