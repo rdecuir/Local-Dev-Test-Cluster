@@ -37,6 +37,16 @@ spec:
       # helm:
       #   valuesObject:
 
+    # - path: custom-charts/ingress
+    #   repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+    #   targetRevision: main
+    #   helm:
+    #     valuesObject:
+    #       name: goldilocks
+    #       service: goldilocks-dashboard
+    #       port:
+    #         number: 80
+
   syncPolicy:
     # automated:
     #   prune: true                                # Delete resources no longer defined
