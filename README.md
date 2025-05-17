@@ -36,3 +36,23 @@
 1. `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 
 1. `kubectl port-forward -n argocd svc/argocd-server 8080:443`
+
+## OR
+1.  ```
+    helm repo add argo https://argoproj.github.io/argo-helm
+    helm repo update
+    ```
+1.  ```
+    helm install argocd argo/argo-cd \
+        --namespace argocd \
+        --create-namespace \
+        --set admin.enabled=true \
+        --set admin.password='$2a$10$ppyzZMwG31GR2LLZ0Mias.pglUhjaqoqldR6EDx2Ert7rbJuwymaS' \
+        --set server.insecure=true
+        # --values path/to/values.yaml
+        # --version <CHART_VERSION>
+    ```
+1. Generate password as bcrypt:
+    ```
+    htpasswd -nbBC 10 "" 'admin' | tr -d ':\n' | sed 's/^.*\$2y/\$2a/'
+    ```
