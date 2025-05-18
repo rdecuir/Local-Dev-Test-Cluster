@@ -46,13 +46,12 @@
     helm install argocd argo/argo-cd \
         --namespace argocd \
         --create-namespace \
-        --set admin.enabled=true \
-        --set admin.password='$2a$10$ppyzZMwG31GR2LLZ0Mias.pglUhjaqoqldR6EDx2Ert7rbJuwymaS' \
-        --set server.insecure=true
+        --set-string configs.secret.argocdServerAdminPassword='$2a$10$9DMh/raHJuUHlycOhGe/Ze1rB7KXMDQuDScCfWMxHE7zS7IxsaCXy' \
+        --set-string "configs.params.server\.insecure=true"
         # --values path/to/values.yaml
         # --version <CHART_VERSION>
     ```
 1. Generate password as bcrypt:
     ```
-    htpasswd -nbBC 10 "" 'admin' | tr -d ':\n' | sed 's/^.*\$2y/\$2a/'
+    htpasswd -nbBC 10 "" admin | tr -d ':\n' | sed 's/$2y/$2a/'
     ```
