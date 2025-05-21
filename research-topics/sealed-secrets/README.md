@@ -2,13 +2,17 @@
 
 https://github.com/bitnami-labs/sealed-secrets
 
-1. Install `kubeseal` CLI from https://github.com/bitnami-labs/sealed-secrets
+```
+KUBESEAL_VERSION='' # Set this to, for example, KUBESEAL_VERSION='0.23.0'
+curl -OL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION:?}/kubeseal-${KUBESEAL_VERSION:?}-linux-amd64.tar.gz"
+tar -xvzf kubeseal-${KUBESEAL_VERSION:?}-linux-amd64.tar.gz kubeseal
+sudo install -m 755 kubeseal /usr/local/bin/kubeseal
+```
 
-1. 
-    ```
-    kubectl apply \
-    --filename https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.13.1/controller.yaml
-    ```
+### For Me...
+```
+brew install kubeseal
+```
 
 ### Process
 ```
@@ -17,7 +21,7 @@ kubectl --namespace default \
     generic mysecret \
     --dry-run=client \
     --from-literal foo=bar \
-    --output json
+    --output yaml
 
 kubectl --namespace default \
     create secret \
@@ -39,4 +43,21 @@ kubectl get secret mysecret \
     | base64 --decode && echo
 
 kubeseal --fetch-cert
+```
+
+### Sealing Flow:
+```
+# Build secret, the data must be base64 encoded
+
+kubeseal --fetch-cert --controller-name=sealed-secrets-controller --controller-namespace=sealed-secrets-contoller > ss.pem
+
+kubeseal --cert ss.pem < test-secret.yaml > apps/secrets/SEALED-test-secret.yaml
+
+kubectl get secret test-secret.yaml -n secrets -o jsonpath="{.data.superSecretPassword}" | base64 --decode
+```
+
+### Saving Sealing Key
+```
+kubectl -n sealed-secrets get secret sealed-secrets-{} -o yaml > sealed-secrets-key.yaml
+
 ```

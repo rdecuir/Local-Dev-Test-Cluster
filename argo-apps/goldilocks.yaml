@@ -13,14 +13,14 @@ spec:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
       ref: values
-      path: apps/helm-charts/goldilocks/templates # test this to allow templates in an app container folder 
+      path: apps/goldilocks/templates # test this to allow templates in an app container folder 
       
     - repoURL: https://charts.fairwinds.com/stable
       chart: goldilocks
       targetRevision: 9.0.2
       helm:
         valueFiles:
-          - $values/apps/helm-charts/goldilocks/values.yaml
+          - $values/apps/goldilocks/values.yaml
 
     # - repoURL: https://charts.fairwinds.com/stable
     #   chart: vpa
