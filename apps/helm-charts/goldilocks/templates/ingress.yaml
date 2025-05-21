@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: goldilocks-dashboard
+  name: goldilocks-dashboard-template
   namespace: goldilocks
   annotations:
     kubernetes.io/ingress.class: traefik
