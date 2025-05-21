@@ -48,9 +48,9 @@ spec:
     #         number: 80
 
   syncPolicy:
-    # automated:
-    #   prune: true                                # Delete resources no longer defined
-    #   selfHeal: true                             # Reapply if drift is detected
+    automated:
+      prune: true                                # Delete resources no longer defined
+      selfHeal: true                             # Reapply if drift is detected
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
