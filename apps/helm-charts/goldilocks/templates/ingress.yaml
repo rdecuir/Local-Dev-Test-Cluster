@@ -1,21 +1,21 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: goldilocks-dashboard-template
-  namespace: goldilocks
-  annotations:
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: goldilocks.localhost
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: goldilocks-dashboard
-              port:
-                number: 80
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: goldilocks-dashboard-template
+#   namespace: goldilocks
+#   annotations:
+#     kubernetes.io/ingress.class: traefik
+#     traefik.ingress.kubernetes.io/router.entrypoints: web
+# spec:
+#   ingressClassName: traefik
+#   rules:
+#     - host: goldilocks.localhost
+#       http:
+#         paths:
+#         - path: /
+#           pathType: Prefix
+#           backend:
+#             service:
+#               name: goldilocks-dashboard
+#               port:
+#                 number: 80
