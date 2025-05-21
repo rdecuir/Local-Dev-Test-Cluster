@@ -1,6 +1,7 @@
+global:
+  networkMode: {{ .Values.global.networkMode }}
 configs:
   secret:
     argocdServerAdminPassword: $2a$10$9DMh/raHJuUHlycOhGe/Ze1rB7KXMDQuDScCfWMxHE7zS7IxsaCXy
-    # argocdServerAdminPasswordMtime: "2025-05-15T00:00:00Z"
   params:
     server.insecure: true

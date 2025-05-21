@@ -4,6 +4,7 @@ set -e
 
 CLUSTER_NAME="local-k3d"
 ARGO_NAMESPACE="argocd"
+GATEWAY_MODE="${2:-gateway}"  # Default to 'gateway' if not provided
 
 # Color codes
 RED='\033[0;31m'
@@ -20,8 +21,11 @@ step()    { echo -e "${YELLOW}[➤]${NC} $1"; }
 
 create_cluster() {
     step "Creating k3d cluster: ${CLUSTER_NAME}"
-    # k3d cluster create "$CLUSTER_NAME" --agents 3 --port "80:80@loadbalancer" --port "443:443@loadbalancer"
-    k3d cluster create "$CLUSTER_NAME" --agents 3 --port "80:80@loadbalancer" --port "443:443@loadbalancer" --k3s-arg "--disable=traefik@server:*"
+    if [[ "$GATEWAY_MODE" == "gateway" ]]; then
+        k3d cluster create "$CLUSTER_NAME" --agents 3 --port "80:80@loadbalancer" --port "443:443@loadbalancer" --k3s-arg "--disable=traefik@server:*"
+    else
+        k3d cluster create "$CLUSTER_NAME" --agents 3 --port "80:80@loadbalancer" --port "443:443@loadbalancer"
+    fi
     success "Cluster created."
 
     step "Waiting for nodes to be ready..."
@@ -29,7 +33,15 @@ create_cluster() {
     success "All nodes ready."
 
     install_argocd
-    install_api_gateway
+    if [[ "$GATEWAY_MODE" == "gateway" ]]; then
+            install_api_gateway
+        else
+            step "Skipping API Gateway installation (mode: $GATEWAY_MODE)"
+    fi
+
+    step "Creating Root App in argocd..."
+    kubectl apply -n argocd -f argo-apps/root-app.yaml
+    success "Apps should start to be deployed."
 }
 
 delete_cluster() {
@@ -48,7 +60,8 @@ install_argocd() {
     --namespace argocd \
     --create-namespace \
     --set-string configs.secret.argocdServerAdminPassword='$2a$10$9DMh/raHJuUHlycOhGe/Ze1rB7KXMDQuDScCfWMxHE7zS7IxsaCXy' \
-    --set-string "configs.params.server\.insecure=true" > /dev/null
+    --set-string "configs.params.server\.insecure=true" \
+    --set "global.networkMode=${network_mode}" > /dev/null
     # --values apps/figureout-a-name/argocd/argocd.values.yaml
     # --version <CHART_VERSION>
 
@@ -58,10 +71,6 @@ install_argocd() {
     success "Argo CD is installed and running."
 
     step "Access Argo CD UI at: ${BLUE}http://argocd.localhost${NC}"
-
-    # PASS=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-    PASS=$(kubectl -n argocd get secret argocd-secret -o jsonpath="{.data.admin\.password}" | base64 -d)
-    echo -e "${YELLOW}Initial admin password:${NC} ${GREEN}${PASS}${NC}"
 }
 
 install_api_gateway() {
@@ -75,7 +84,11 @@ install_api_gateway() {
 }
 
 usage() {
-    echo -e "${YELLOW}Usage:${NC} $0 {up|down}"
+    echo -e "${YELLOW}Usage:${NC} $0 {up|down} [gateway|ingress]"
+    echo "       up      - Create cluster and optionally install API Gateway (default: gateway)"
+    echo "       down    - Delete the cluster"
+    echo "       gateway - Use API Gateway"
+    echo "       ingress - Skip API Gateway (or configure ingress manually)"
     exit 1
 }
 
