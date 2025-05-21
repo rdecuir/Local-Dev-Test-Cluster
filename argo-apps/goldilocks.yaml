@@ -30,9 +30,9 @@ spec:
           - $values/apps/helm-charts/goldilocks/values.yaml
 
     # Helper "config(manifest needed on top of charts), or custom-charts(templates)"
-    - path: apps/helm-charts/goldilocks/templates/ingress.yaml
-      repoURL:
-      targetRevision: 
+    # - path: apps/helm-charts/goldilocks/templates/ingress.yaml
+    #   repoURL:
+    #   targetRevision: 
       # section for templated custom-charts
       # helm:
       #   valuesObject:
