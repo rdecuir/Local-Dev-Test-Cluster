@@ -10,9 +10,9 @@ spec:
     namespace: goldilocks                         # Target namespace for the app
   
   sources:
-    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-      targetRevision: main
-      ref: values
+    # - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+    #   targetRevision: main
+    #   ref: values
     # path: apps/helm-charts/goldilocks/templates # test this to allow templates in an app container folder 
       
     - repoURL: https://charts.fairwinds.com/stable
@@ -20,14 +20,14 @@ spec:
       targetRevision: 9.0.2
       helm:
         valueFiles:
-          - $values/apps/helm-charts/goldilocks/values.yaml
+          - apps/helm-charts/goldilocks/values.yaml
 
     - repoURL: https://charts.fairwinds.com/stable
       chart: vpa
       targetRevision: 4.5.*
       helm:
         valueFiles:
-          - $values/apps/helm-charts/goldilocks/values.yaml
+          - apps/helm-charts/goldilocks/values.yaml
 
     # Helper "config(manifest needed on top of charts), or custom-charts(templates)"
     # - path: apps/helm-charts/goldilocks/templates/ingress.yaml
