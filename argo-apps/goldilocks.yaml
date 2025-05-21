@@ -54,5 +54,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-      # - ApplyOutOfSyncOnly=true
-      # - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
