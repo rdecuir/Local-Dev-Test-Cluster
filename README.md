@@ -55,3 +55,8 @@
     ```
     htpasswd -nbBC 10 "" admin | tr -d ':\n' | sed 's/$2y/$2a/'
     ```
+
+
+# How to find the right Helm chart version
+1. helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+1. helm search repo sealed-secrets/sealed-secrets --versions
