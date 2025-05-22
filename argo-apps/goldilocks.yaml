@@ -17,14 +17,12 @@ spec:
       helm:
         valueFiles:
           - $values/argo-apps/values-network.yaml
-          - $values/apps/goldilocks/values.yaml
-          
+
     - repoURL: https://charts.fairwinds.com/stable
       chart: goldilocks
       targetRevision: 9.0.2
       helm:
         valueFiles:
-          - $values/argo-apps/values-network.yaml
           - $values/apps/goldilocks/values.yaml
 
     # - repoURL: https://charts.fairwinds.com/stable
