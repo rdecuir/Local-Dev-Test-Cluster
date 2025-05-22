@@ -13,7 +13,7 @@ spec:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
       ref: values
-      path: apps/goldilocks/ # test this to allow templates in an app container folder 
+      path: apps/goldilocks # test this to allow templates in an app container folder 
       helm:
         valueFiles:
           - $values/argo-apps/values-network.yaml
