@@ -21,6 +21,7 @@ spec:
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
+          - $values/argo-apps/values-network.yaml
           - $values/apps/argocd/values.yaml
 
   syncPolicy:

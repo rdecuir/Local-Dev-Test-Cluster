@@ -39,6 +39,8 @@ create_cluster() {
             step "Skipping API Gateway installation (mode: $GATEWAY_MODE)"
     fi
 
+    generate_values_file
+
     step "Creating Root App in argocd..."
     kubectl apply -n argocd -f argo-apps/root-app.yaml
     success "Apps should start to be deployed."
@@ -81,6 +83,14 @@ install_api_gateway() {
     kubectl apply -f research-topics/gateway-api-nginx/argocd-gateway-api.yaml > /dev/null
 
     success "API Gateway installed."
+}
+
+generate_values_file() {
+  cat > argo-apps/common-values.yaml <<EOF
+global:
+  networkMode: ${GATEWAY_MODE}
+EOF
+  success "Generated common Helm values with networkMode=${GATEWAY_MODE}"
 }
 
 usage() {
