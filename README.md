@@ -60,3 +60,9 @@
 # How to find the right Helm chart version
 1. helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
 1. helm search repo sealed-secrets/sealed-secrets --versions
+
+## Helm template
+```
+cd apps/goldilocks
+helm template . -f ../../argo-apps/values-network.yaml -f values.yaml
+```
