@@ -1,2 +1,2 @@
 global:
-  networkMode: gateway
+  networkMode: ingress
