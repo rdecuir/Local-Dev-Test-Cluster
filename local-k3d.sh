@@ -61,7 +61,7 @@ install_argocd() {
     --create-namespace \
     --set-string configs.secret.argocdServerAdminPassword='$2a$10$9DMh/raHJuUHlycOhGe/Ze1rB7KXMDQuDScCfWMxHE7zS7IxsaCXy' \
     --set-string "configs.params.server\.insecure=true" \
-    --set "global.networkMode=${network_mode}" > /dev/null
+    --set "global.networkMode=${GATEWAY_MODE}" > /dev/null
     # --values apps/figureout-a-name/argocd/argocd.values.yaml
     # --version <CHART_VERSION>
 
