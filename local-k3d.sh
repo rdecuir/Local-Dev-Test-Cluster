@@ -86,7 +86,7 @@ install_api_gateway() {
 }
 
 generate_values_file() {
-  cat > argo-apps/common-values.yaml <<EOF
+  cat > argo-apps/values-network.yaml <<EOF
 global:
   networkMode: ${GATEWAY_MODE}
 EOF
