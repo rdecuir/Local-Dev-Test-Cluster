@@ -4,7 +4,7 @@ metadata:
   name: apps
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io/local-dev-test-cluster
 spec:
   project: default
   destination:
