@@ -20,6 +20,7 @@ spec:
       backendRefs:
         - name: goldilocks-dashboard
           port: 80
-          # - group: ''
-          #   kind: Service
+          group: ''
+          kind: Service
+          weight: 1
 {{- end }}
