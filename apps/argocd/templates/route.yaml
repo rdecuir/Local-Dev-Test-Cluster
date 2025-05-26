@@ -8,6 +8,8 @@ spec:
   parentRefs:
     - name: nginx-gateway
       namespace: nginx-gateway
+      group: gateway.networking.k8s.io
+      kind: Gateway
   hostnames:
     - argocd.localhost
   rules:
@@ -18,4 +20,6 @@ spec:
       backendRefs:
         - name: argocd-server
           port: 80
+        - group: ''	
+          kind: Service
 {{- end }}
