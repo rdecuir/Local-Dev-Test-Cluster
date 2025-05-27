@@ -16,8 +16,7 @@ spec:
       path: argo-apps
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
-      ref: values
-      path: apps/*/application.yaml
+      path: apps
   syncPolicy:
     automated:
       prune: true                                # Delete resources no longer defined
