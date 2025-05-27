@@ -10,15 +10,12 @@ spec:
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
     namespace: argocd                           # Reference to your AppProject
-  sources:
-    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-      targetRevision: main
-      path: argo-apps
-    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-      targetRevision: main
-      path: apps
-      directory:
-        recurse: true
+  source:
+    repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+    targetRevision: main
+    path: argo-apps
+    directory:
+      recurse: true
   syncPolicy:
     automated:
       prune: true                                # Delete resources no longer defined
