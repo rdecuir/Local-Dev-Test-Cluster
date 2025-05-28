@@ -16,7 +16,7 @@ spec:
       path: apps/goldilocks # test this to allow templates in an app container folder 
       helm:
         valueFiles:
-          - $values/argo-apps/values-network.yaml
+          - $values/argo-apps/values.yaml
 
     - repoURL: https://charts.fairwinds.com/stable
       chart: goldilocks

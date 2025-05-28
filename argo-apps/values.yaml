@@ -1,2 +1,5 @@
 global:
   networkMode: gateway
+apps:
+  - argocd
+  - goldilocks

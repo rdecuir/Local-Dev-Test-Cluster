@@ -64,5 +64,5 @@
 ## Helm template
 ```
 cd apps/goldilocks
-helm template . -f ../../argo-apps/values-network.yaml -f values.yaml
+helm template . -f ../../argo-apps/values.yaml -f values.yaml
 ```

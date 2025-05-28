@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Dependencies: k3d, kubectl, helm, yq
 
 set -e
 
@@ -39,11 +40,7 @@ create_cluster() {
             step "Skipping API Gateway installation (mode: $GATEWAY_MODE)"
     fi
 
-    generate_values_file
-
-    step "Creating Root App in argocd..."
-    kubectl apply -n argocd -f argo-apps/root-app.yaml
-    success "Apps should start to be deployed."
+    deploy_argo_apps
 }
 
 delete_cluster() {
@@ -67,7 +64,7 @@ install_argocd() {
     # --version <CHART_VERSION>
 
     step "Waiting for Argo CD server to be ready..."
-    kubectl rollout status deployment argocd-server -n argocd --timeout=120s > /dev/null
+    kubectl rollout status deployment argocd-server -n argocd --timeout=180s > /dev/null
 
     success "Argo CD is installed and running."
 
@@ -84,12 +81,36 @@ install_api_gateway() {
     success "API Gateway installed."
 }
 
-generate_values_file() {
-  cat > argo-apps/values.yaml <<EOF
-global:
-  networkMode: ${GATEWAY_MODE}
-EOF
-  success "Generated common Helm values with networkMode=${GATEWAY_MODE}"
+deploy_argo_apps() {
+    step "Deploying Argo CD apps from values file..."
+
+    local VALUES_FILE="argo-apps/values.yaml"
+    if [[ ! -f "$VALUES_FILE" ]]; then
+        error "Missing values file: $VALUES_FILE"
+        exit 1
+    fi
+
+    apps=()
+    while IFS= read -r app; do
+    apps+=("$app")
+    done < <(yq e '.apps[]' "$VALUES_FILE")
+
+    if [[ ${#apps[@]} -eq 0 ]]; then
+        warn "No applications listed under 'apps' in $VALUES_FILE"
+        return
+    fi
+
+    for app in "${apps[@]}"; do
+        local manifest_path="argo-apps/${app}.yaml"
+        if [[ -f "$manifest_path" ]]; then
+            step "Deploying app: $app"
+            kubectl apply -n argocd -f "$manifest_path"
+        else
+            warn "App manifest not found for: $app ($manifest_path)"
+        fi
+    done
+
+    success "Finished deploying Argo CD apps."
 }
 
 usage() {
