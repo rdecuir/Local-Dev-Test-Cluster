@@ -58,9 +58,9 @@ install_argocd() {
 
     helm install argocd argo/argo-cd \
     --namespace argocd \
-    --create-namespace \
-    --set-string configs.secret.argocdServerAdminPassword='$2a$10$9DMh/raHJuUHlycOhGe/Ze1rB7KXMDQuDScCfWMxHE7zS7IxsaCXy' \
-    --set-string "configs.params.server\.insecure=true" > /dev/null
+    --create-namespace > /dev/null
+    # --set-string configs.secret.argocdServerAdminPassword='$2a$10$9DMh/raHJuUHlycOhGe/Ze1rB7KXMDQuDScCfWMxHE7zS7IxsaCXy' \
+    # --set-string "configs.params.server\.insecure=true" > /dev/null
     # --values apps/figureout-a-name/argocd/argocd.values.yaml
     # --version <CHART_VERSION>
 
