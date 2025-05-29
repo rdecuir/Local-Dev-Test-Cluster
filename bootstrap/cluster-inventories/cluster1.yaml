@@ -1,0 +1,6 @@
+global:
+  networkMode: gateway
+apps:
+  - argocd
+  - goldilocks
+  - sealed-secrets
