@@ -10,19 +10,23 @@ spec:
     namespace: goldilocks                         # Target namespace for the app
   
   sources:
-    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
-      ref: values
+      ref: globalValues                 # This one is ONLY for values
       path: argo-apps
 
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
-      ref: values
+      ref: appValues                   # This one is ONLY for values
+      path: apps/goldilocks
+
+    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+      targetRevision: main
       path: apps/goldilocks/resources # test this to allow templates in an app container folder
       helm:
         valueFiles:
-          - $values/values.yaml
-          - ../values.yaml
+          - $globalValues/values.yaml
+          - $appValues/values.yaml
 
   syncPolicy:
     automated:
