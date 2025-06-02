@@ -1,0 +1,18 @@
+goldilocks:
+  vpa:
+    enabled: true
+
+traefikRoute:
+  name: goldilocks
+  namespace: goldilocks
+  service: goldilocks-dashboard
+
+trafeikIngress:
+  name: goldilocks
+  namespace: goldilocks
+  service: goldilocks-dashboard
+
+customConfigMap:
+  name: example-config
+  log_level: debug
+  feature_enabled: "true"

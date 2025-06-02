@@ -1,23 +1,21 @@
-{{- if eq .Values.global.networkMode "ingress" }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: goldilocks-dashboard-template
-  namespace: goldilocks
+  name: {{ .Values.name }}-ingress
+  namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   ingressClassName: traefik
   rules:
-    - host: goldilocks.localhost
+    - host: {{ .Values.name }}.localhost
       http:
         paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: goldilocks-dashboard
+              name: {{ .Values.service }}
               port:
                 number: 80
-{{- end}}

@@ -14,41 +14,6 @@ spec:
       targetRevision: main
       ref: values
       path: apps/goldilocks # test this to allow templates in an app container folder 
-      helm:
-        valueFiles:
-          - $values/argo-apps/values.yaml
-
-    - repoURL: https://charts.fairwinds.com/stable
-      chart: goldilocks
-      targetRevision: 9.0.2
-      helm:
-        valueFiles:
-          - $values/apps/goldilocks/values.yaml
-
-    # - repoURL: https://charts.fairwinds.com/stable
-    #   chart: vpa
-    #   targetRevision: 4.5.*
-    #   helm:
-    #     valueFiles:
-    #       - $values/apps/helm-charts/goldilocks/values.yaml
-
-    # Helper "config(manifest needed on top of charts), or custom-charts(templates)"
-    # - path: apps/helm-charts/goldilocks/templates/ingress.yaml
-    #   repoURL:
-    #   targetRevision: 
-      # section for templated custom-charts
-      # helm:
-      #   valuesObject:
-
-    # - path: custom-charts/ingress
-    #   repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-    #   targetRevision: main
-    #   helm:
-    #     valuesObject:
-    #       name: goldilocks
-    #       service: goldilocks-dashboard
-    #       port:
-    #         number: 80
 
   syncPolicy:
     automated:
@@ -57,5 +22,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-      # - ApplyOutOfSyncOnly=true
-      # - RespectIgnoreDifferences=true

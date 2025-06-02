@@ -1,0 +1,24 @@
+apiVersion: v2
+name: goldilocks
+description: Helm chart for Goldilocks with ingress/gateway support
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - alias: goldilocks
+    name: goldilocks
+    version: 9.0.2
+    repository: https://charts.fairwinds.com/stable
+  
+  - alias: traefikRoute
+    name: custom-route
+    version: 0.1.0
+    repository: "file://../../../charts/route"
+    condition: global.networkMode.gatewayEnabled
+
+  - alias: traefikIngress
+    name: custom-ingress
+    version: 0.1.0
+    repository: "file://../../../charts/ingress"
+    condition: global.networkMode.ingressEnabled

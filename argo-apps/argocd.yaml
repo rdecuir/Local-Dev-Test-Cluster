@@ -33,9 +33,9 @@ spec:
       selfHeal: true                             # Reapply if drift is detected
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
-      - ApplyOutOfSyncOnly=true
-      - RespectIgnoreDifferences=true
+      # - ServerSideApply=true
+      # - ApplyOutOfSyncOnly=true
+      # - RespectIgnoreDifferences=true
 
   ignoreDifferences:
     - group: ""
