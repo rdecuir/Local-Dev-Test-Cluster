@@ -7,7 +7,7 @@ traefikRoute:
   namespace: goldilocks
   service: goldilocks-dashboard
 
-trafeikIngress:
+traefikIngress:
   name: goldilocks
   namespace: goldilocks
   service: goldilocks-dashboard
