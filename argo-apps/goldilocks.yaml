@@ -10,7 +10,7 @@ spec:
     namespace: goldilocks                         # Target namespace for the app
   
   sources:
-     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
       ref: globalValues                 # This one is ONLY for values
       path: argo-apps
