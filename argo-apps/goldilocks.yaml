@@ -14,8 +14,8 @@ spec:
       targetRevision: main
       path: apps/goldilocks/resources # test this to allow templates in an app container folder
       helm:
+        ignoreMissingValueFiles: true
         valueFiles:
-          - ../../../argo-apps/values.yaml
           - ../values.yaml
 
   syncPolicy:
