@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: istio-ingress
+  namespace: istio-system
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+  - match: Host(`argocd.localhost`)
+    kind: Rule
+    services:
+    - name: istio-ingressgateway
+      namespace: istio-system
+      port: 80
