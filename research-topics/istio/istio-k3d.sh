@@ -58,7 +58,10 @@ install_istio() {
     istioctl x precheck
 
     step "Installing Istio"
-    istioctl install --set profile=demo -y
+    istioctl install \
+        --set profile=demo \
+        --set values.gateways.istio-ingressgateway.type=ClusterIP \
+        -y
 
     step "Cleaning up..."
     rm -rf istio-1.22.0
@@ -83,6 +86,9 @@ install_argocd() {
     # --values apps/figureout-a-name/argocd/argocd.values.yaml
     # --version <CHART_VERSION>
 
+    # kubectl delete job argocd-redis-secret-init -n argocd
+
+
     step "Waiting for Argo CD server to be ready..."
     kubectl rollout status deployment argocd-server -n argocd --timeout=180s > /dev/null
 
@@ -104,10 +110,10 @@ install_api_gateway() {
 deploy_argo_apps() {
     step "Deploying Argo CD apps from values file..."
 
-    apps=("istio" "traefik" "argocd" "goldilocks" "sealed-secrets")
+    apps=("istio" "argocd" "goldilocks" "sealed-secrets")
 
     for app in "${apps[@]}"; do
-        local manifest_path="../argo-apps/${app}.yaml"
+        local manifest_path="../../argo-apps/${app}.yaml"
         if [[ -f "$manifest_path" ]]; then
             step "Deploying app: $app"
             kubectl apply -n argocd -f "$manifest_path" > /dev/null
