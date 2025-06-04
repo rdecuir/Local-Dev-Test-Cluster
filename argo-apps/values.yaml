@@ -1,4 +1,0 @@
-global:
-  networkMode:
-    gatewayEnabled: true
-    ingressEnabled: false

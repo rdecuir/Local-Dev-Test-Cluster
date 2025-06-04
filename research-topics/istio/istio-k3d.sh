@@ -69,7 +69,7 @@ install_argocd() {
     step "Creating and labeling the argocd namespace for Istio sidecar injection"
     kubectl create namespace argocd || true
     kubectl label namespace argocd istio-injection=enabled --overwrite
-    
+
     step "Installing Argo CD"
 
     helm repo add argo https://argoproj.github.io/argo-helm > /dev/null
@@ -104,7 +104,7 @@ install_api_gateway() {
 deploy_argo_apps() {
     step "Deploying Argo CD apps from values file..."
 
-    apps=("argocd" "goldilocks" "sealed-secrets")
+    apps=("traefik" "argocd" "goldilocks" "sealed-secrets")
 
     for app in "${apps[@]}"; do
         local manifest_path="../argo-apps/${app}.yaml"
