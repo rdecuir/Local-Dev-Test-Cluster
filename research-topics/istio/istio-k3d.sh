@@ -104,7 +104,7 @@ install_api_gateway() {
 deploy_argo_apps() {
     step "Deploying Argo CD apps from values file..."
 
-    apps=("traefik" "argocd" "goldilocks" "sealed-secrets")
+    apps=("istio" "traefik" "argocd" "goldilocks" "sealed-secrets")
 
     for app in "${apps[@]}"; do
         local manifest_path="../argo-apps/${app}.yaml"

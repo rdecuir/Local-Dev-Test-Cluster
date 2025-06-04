@@ -24,3 +24,6 @@
 
 1. `./bootstrap.sh up cluster1`
 1. Then navigate to http://argocd.localhost, you will need to wait roughly 5-8 mins for everything to complete and for argocd to come up.
+
+## Patterns
+The current use of this cluster configuration is Traefik handles external access control and Istio handles internal traffic as the service mesh. Yes Istio could replace traefik completely, but we need to honor what is currently in place and working.
