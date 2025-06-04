@@ -5,6 +5,6 @@ argocd:
     params:
       server.insecure: true
   redis:
-    secretInit:
-      podAnnotations:
+    secret:
+      annotations:
         sidecar.istio.io/inject: "false"
