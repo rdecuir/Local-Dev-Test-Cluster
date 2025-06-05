@@ -64,9 +64,8 @@ install_istio() {
         -y
 
     step "Cleaning up..."
-    rm -rf istio-1.22.0
+    rm -rf ./istio-1.22.0
 }
-
 
 install_argocd() {
     step "Creating and labeling the argocd namespace for Istio sidecar injection"
