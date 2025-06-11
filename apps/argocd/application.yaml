@@ -17,6 +17,7 @@ spec:
       ignoreMissingValueFiles: true
       valueFiles:
         - ../values/values.yaml
+        - ../values/istio-values.yaml
 
   syncPolicy:
     automated:
@@ -24,9 +25,6 @@ spec:
       selfHeal: true                             # Reapply if drift is detected
     syncOptions:
       - CreateNamespace=true
-      # - ServerSideApply=true
-      # - ApplyOutOfSyncOnly=true
-      # - RespectIgnoreDifferences=true
 
   ignoreDifferences:
     - group: ""
