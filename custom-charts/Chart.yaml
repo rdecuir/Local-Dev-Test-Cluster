@@ -1,6 +1,0 @@
-apiVersion: v2
-name: custom-ingress
-description: An ingress template chart allowing for easy definition of ingress directly in the Applicaton definition
-type: application
-version: 0.0.1
-appVersion: 1.0.0
