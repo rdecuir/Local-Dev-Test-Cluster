@@ -6,7 +6,7 @@ set -e
 CLUSTER_NAME="local-k3d"
 ARGO_NAMESPACE="argocd"
 GATEWAY_MODE="${3:-gateway}"  # Default to 'gateway' if not provided
-CLUSTER_INVENTORY="${2:-default}"
+CLUSTER="${2:-dev}"
 
 # Color codes
 RED='\033[0;31m'
@@ -21,6 +21,10 @@ error()   { echo -e "${RED}[ERROR]${NC} $1"; }
 success() { echo -e "${GREEN}[✔]${NC} $1"; }
 step()    { echo -e "${YELLOW}[➤]${NC} $1"; }
 
+if [[ "$CLUSTER" == "istio" ]]; then
+    GATEWAY_MODE="ingress"
+fi
+
 create_cluster() {
     step "Creating k3d cluster: ${CLUSTER_NAME}"
     if [[ "$GATEWAY_MODE" == "gateway" ]]; then
@@ -34,11 +38,16 @@ create_cluster() {
     kubectl wait --for=condition=Ready nodes --all --timeout=60s > /dev/null
     success "All nodes ready."
 
+    if [[ "$CLUSTER" == "istio" ]]; then
+        install_istio
+    fi
+
     install_argocd
+
     if [[ "$GATEWAY_MODE" == "gateway" ]]; then
-            install_api_gateway
-        else
-            step "Skipping API Gateway installation (mode: $GATEWAY_MODE)"
+        install_api_gateway
+    else
+        step "Skipping API Gateway installation (mode: $GATEWAY_MODE)"
     fi
 
     deploy_argo_apps
@@ -50,22 +59,57 @@ delete_cluster() {
     success "Cluster deleted."
 }
 
+install_istio() {
+    step "Installing Istio"
+    step "Downloading istioctl"
+    ISTIO_VERSION="1.22.0"
+    curl -sSL https://istio.io/downloadIstio | ISTIO_VERSION=1.22.0 TARGET_ARCH=arm64 sh - > /dev/null 2>&1
+
+    step "Installing istioctl"
+    sudo mv istio-*/bin/istioctl /usr/local/bin/
+
+    step "Istio precheck"
+    istioctl x precheck
+
+    step "Installing Istio"
+    istioctl install \
+        --set profile=demo \
+        --set values.gateways.istio-ingressgateway.type=ClusterIP \
+        -y
+
+    step "Cleaning up..."
+    rm -rf istio-${ISTIO_VERSION}
+}
+
 install_argocd() {
+    if [[ "$CLUSTER" == "istio" ]]; then
+        step "Creating and labeling the argocd namespace for Istio sidecar injection"
+        kubectl create namespace argocd || true
+        kubectl label namespace argocd istio-injection=enabled --overwrite
+    fi
+
     step "Installing Argo CD"
 
     helm repo add argo https://argoproj.github.io/argo-helm > /dev/null
     helm repo update > /dev/null
 
-    helm install argocd argo/argo-cd \
-    --namespace argocd \
-    --create-namespace \
-    --set-string configs.secret.argocdServerAdminPassword='$2a$10$9DMh/raHJuUHlycOhGe/Ze1rB7KXMDQuDScCfWMxHE7zS7IxsaCXy' \
-    --set-string "configs.params.server\.insecure=true" > /dev/null
-    # --values apps/figureout-a-name/argocd/argocd.values.yaml
-    # --version <CHART_VERSION>
+    if [[ "$CLUSTER" == "istio" ]]; then
+        helm install argocd argo/argo-cd \
+        --namespace argocd \
+        --create-namespace \
+        --values ../apps/argocd/values/values.yaml \
+        --values ../apps/argocd/values/istio-values.yaml > /dev/null
+    else
+        helm install argocd argo/argo-cd \
+        --namespace argocd \
+        --create-namespace \
+        --values ../apps/argocd/values/values.yaml > /dev/null
+    fi
+
+    # kubectl delete job argocd-redis-secret-init -n argocd
 
     step "Waiting for Argo CD server to be ready..."
-    kubectl rollout status deployment argocd-server -n argocd --timeout=180s > /dev/null
+    kubectl rollout status deployment argocd-server -n argocd --timeout=300s > /dev/null
 
     success "Argo CD is installed and running."
 
@@ -83,31 +127,32 @@ install_api_gateway() {
 }
 
 deploy_argo_apps() {
-    step "Deploying Argo CD apps from values file..."
+    step "Deploying Argo CD apps based on cluster inventory..."
 
-    local VALUES_FILE="cluster-inventories/${CLUSTER_INVENTORY}.yaml"
-    if [[ ! -f "$VALUES_FILE" ]]; then
-        error "Missing values file: $VALUES_FILE"
-        exit 1
-    fi
+    for app_dir in ../apps/*/; do
+        app=$(basename "$app_dir")
+        clusters_file="${app_dir}/clusters.yaml"
+        argo_app_path="${app_dir}/application.yaml"
 
-    apps=()
-    while IFS= read -r app; do
-    apps+=("$app")
-    done < <(yq e '.apps[]' "$VALUES_FILE")
+        # Skip if application.yaml does not exist
+        if [[ ! -f "$argo_app_path" ]]; then
+            warn "No application.yaml found for app: $app"
+            continue
+        fi
 
-    if [[ ${#apps[@]} -eq 0 ]]; then
-        warn "No applications listed under 'apps' in $VALUES_FILE"
-        return
-    fi
+        # If clusters.yaml is missing, deploy unconditionally
+        if [[ ! -f "$clusters_file" ]]; then
+            step "Deploying app without cluster filter: $app"
+            kubectl apply -n argocd -f "$argo_app_path" > /dev/null
+            continue
+        fi
 
-    for app in "${apps[@]}"; do
-        local manifest_path="../argo-apps/${app}.yaml"
-        if [[ -f "$manifest_path" ]]; then
-            step "Deploying app: $app"
-            kubectl apply -n argocd -f "$manifest_path" > /dev/null
+        # Check if current cluster inventory is listed
+        if yq e '.clusters[]' "$clusters_file" | grep -qx "$CLUSTER"; then
+            step "Deploying app: $app (matches cluster: $CLUSTER)"
+            kubectl apply -n argocd -f "$argo_app_path" > /dev/null
         else
-            warn "App manifest not found for: $app ($manifest_path)"
+            step "Skipping app: $app (cluster $CLUSTER not in clusters.yaml)"
         fi
     done
 
@@ -115,7 +160,7 @@ deploy_argo_apps() {
 }
 
 usage() {
-    echo -e "${YELLOW}Usage:${NC} $0 {up|down} [default|cluster1] [gateway|ingress]"
+    echo -e "${YELLOW}Usage:${NC} $0 {up|down} [dev|istio] [gateway|ingress]"
     echo "       up      - Create cluster and optionally install API Gateway (default: gateway)"
     echo "       down    - Delete the cluster"
     echo "       gateway - Use API Gateway"

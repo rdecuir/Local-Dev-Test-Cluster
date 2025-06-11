@@ -1,4 +1,0 @@
-apps:
-  - argocd
-  - goldilocks
-  - sealed-secrets

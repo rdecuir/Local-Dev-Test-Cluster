@@ -1,22 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: goldilocks
+  name: sealed-secrets-controller
   namespace: argocd
 spec:
   project: default                                # Reference to your AppProject
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
-    namespace: goldilocks                         # Target namespace for the app
+    namespace: sealed-secrets-contoller                     # Target namespace for the app
   
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
-      path: apps/goldilocks/resources # test this to allow templates in an app container folder
+      ref: values
+      path: apps/sealed-secrets/templates # test this to allow templates in an app container folder
+      
+    - repoURL: https://bitnami-labs.github.io/sealed-secrets
+      chart: sealed-secrets
+      targetRevision: 2.17.2
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
-          - ../values.yaml
+          - $values/apps/sealed-secrets/values.yaml
 
   syncPolicy:
     automated:
@@ -25,3 +30,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true

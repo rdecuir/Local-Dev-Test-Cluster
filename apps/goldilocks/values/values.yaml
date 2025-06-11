@@ -13,6 +13,6 @@ goldilocks:
 #   service: goldilocks-dashboard
 
 customConfigMap:
-  name: example-config-2
+  name: example-config-2-override
   log_level: debug
   feature_enabled: "true"

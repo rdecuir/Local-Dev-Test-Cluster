@@ -1,18 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: istio
+  name: goldilocks
   namespace: argocd
 spec:
   project: default                                # Reference to your AppProject
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
-    namespace: istio-system                             # Target namespace for the app
+    namespace: goldilocks                         # Target namespace for the app
   
   sources:
-  - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
-    targetRevision: main
-    path: apps/istio/manifests
+    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+      targetRevision: main
+      path: apps/goldilocks/resources # test this to allow templates in an app container folder
+      helm:
+        ignoreMissingValueFiles: true
+        valueFiles:
+          - ../values/values.yaml
 
   syncPolicy:
     automated:
@@ -20,6 +24,4 @@ spec:
       selfHeal: true                             # Reapply if drift is detected
     syncOptions:
       - CreateNamespace=true
-      # - ServerSideApply=true
-      # - ApplyOutOfSyncOnly=true
-      # - RespectIgnoreDifferences=true
+      - ServerSideApply=true

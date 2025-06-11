@@ -64,7 +64,7 @@ install_istio() {
         -y
 
     step "Cleaning up..."
-    rm -rf ./istio-1.22.0
+    rm -rf istio-${ISTIO_VERSION}
 }
 
 install_argocd() {
