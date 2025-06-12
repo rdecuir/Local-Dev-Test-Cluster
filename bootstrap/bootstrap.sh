@@ -98,6 +98,7 @@ install_argocd() {
     helm install argocd argo/argo-cd \
         --namespace argocd \
         --create-namespace \
+        --version 3.0.6 \
         --values ../apps/argocd/values/values.yaml > /dev/null
 
     if [[ "$CLUSTER" == "istio" ]]; then
