@@ -102,12 +102,15 @@ install_sealed_secrets() {
 
 install_istio() {
     step "Installing Istio"
-    step "Downloading istioctl"
-    ISTIO_VERSION="1.22.0"
-    curl -sSL https://istio.io/downloadIstio | ISTIO_VERSION=1.22.0 TARGET_ARCH=arm64 sh - > /dev/null 2>&1
 
-    step "Installing istioctl"
-    sudo mv istio-*/bin/istioctl /usr/local/bin/
+    if ! command -v istioctl &> /dev/null; then
+        step "Downloading istioctl"
+        ISTIO_VERSION="1.22.0"
+        curl -sSL https://istio.io/downloadIstio | ISTIO_VERSION=1.22.0 TARGET_ARCH=arm64 sh - > /dev/null 2>&1
+
+        step "Installing istioctl"
+        sudo mv istio-*/bin/istioctl /usr/local/bin/
+    fi
 
     step "Istio precheck"
     istioctl x precheck
