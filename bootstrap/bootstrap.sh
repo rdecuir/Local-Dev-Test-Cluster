@@ -40,6 +40,8 @@ create_cluster() {
 
     helm repo update > /dev/null
 
+    install_sealed_secrets
+
     if [[ "$CLUSTER" == "istio" ]]; then
         install_istio
     fi
@@ -75,7 +77,7 @@ install_sealed_secrets() {
         # --values ../apps/sealed-secrets/values.yaml > /dev/null
 
     step "Waiting for Sealed Secrets controller to be ready..."
-    kubectl rollout status deployment sealed-secrets-controller -n sealed-secrets --timeout=120s > /dev/null
+    kubectl rollout status deployment sealed-secrets -n sealed-secrets --timeout=120s > /dev/null
 
     step "Injecting custom sealing key for cluster-wide consistency"
 
