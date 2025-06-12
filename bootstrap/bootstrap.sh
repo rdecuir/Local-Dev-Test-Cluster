@@ -76,6 +76,8 @@ install_istio() {
         --set profile=demo \
         --set values.gateways.istio-ingressgateway.type=ClusterIP \
         -y
+    
+    kubectl apply -f ../apps/istio/manifests
 
     step "Cleaning up..."
     rm -rf istio-${ISTIO_VERSION}
@@ -93,17 +95,14 @@ install_argocd() {
     helm repo add argo https://argoproj.github.io/argo-helm > /dev/null
     helm repo update > /dev/null
 
-    if [[ "$CLUSTER" == "istio" ]]; then
-        helm install argocd argo/argo-cd \
-        --namespace argocd \
-        --create-namespace \
-        --values ../apps/argocd/values/values.yaml \
-        --values ../apps/argocd/values/istio-values.yaml > /dev/null
-    else
-        helm install argocd argo/argo-cd \
+    helm install argocd argo/argo-cd \
         --namespace argocd \
         --create-namespace \
         --values ../apps/argocd/values/values.yaml > /dev/null
+
+    if [[ "$CLUSTER" == "istio" ]]; then
+        step "Applying Istio VirtualService for Argo CD"
+        kubectl apply -f ../apps/argocd/helm/templates/virtual-service.yaml
     fi
 
     # kubectl delete job argocd-redis-secret-init -n argocd
