@@ -21,7 +21,7 @@ spec:
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
-          - $values/apps/sealed-secrets/values.yaml
+          - $values/apps/sealed-secrets/values/values.yaml
 
   syncPolicy:
     automated:

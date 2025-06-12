@@ -61,6 +61,36 @@ delete_cluster() {
     success "Cluster deleted."
 }
 
+install_sealed_secrets() {
+    step "Installing Sealed Secrets controller"
+
+    helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets > /dev/null
+    helm repo update > /dev/null
+
+    kubectl create namespace sealed-secrets || true
+
+    helm install sealed-secrets sealed-secrets/sealed-secrets \
+        --namespace sealed-secrets \
+        --version 2.17.2 > /dev/null
+        # --values ../apps/sealed-secrets/values.yaml > /dev/null
+
+    step "Waiting for Sealed Secrets controller to be ready..."
+    kubectl rollout status deployment sealed-secrets-controller -n sealed-secrets --timeout=120s > /dev/null
+
+    step "Injecting custom sealing key for cluster-wide consistency"
+
+    kubectl delete secret -n sealed-secrets sealed-secrets-key 2>/dev/null || true
+    # kubectl create secret tls sealed-secrets-key \
+    #     --cert="../apps/sealed-secrets/sealed-secrets.pem" \
+    #     --key="../apps/sealed-secrets/sealed-secrets.key" \
+    #     -n sealed-secrets
+    kubectl apply -f ../sealed-secrets-sealing-key.yaml > /dev/null
+
+    step "Restarting controller to pick up the new key"
+    kubectl delete pod -l app.kubernetes.io/name=sealed-secrets -n sealed-secrets
+    success "Sealed Secrets installed and custom key applied"
+}
+
 install_istio() {
     step "Installing Istio"
     step "Downloading istioctl"
