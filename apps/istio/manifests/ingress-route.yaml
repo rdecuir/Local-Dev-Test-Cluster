@@ -14,3 +14,9 @@ spec:
     - name: istio-ingressgateway
       namespace: istio-system
       port: 80
+  - match: Host(`goldilocks.localhost`)
+    kind: Rule
+    services:
+      - name: istio-ingressgateway
+        namespace: istio-system
+        port: 80

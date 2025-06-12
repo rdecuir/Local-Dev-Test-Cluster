@@ -12,7 +12,7 @@ spec:
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
-      path: apps/goldilocks/resources # test this to allow templates in an app container folder
+      path: apps/goldilocks/helm # test this to allow templates in an app container folder
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
