@@ -49,7 +49,7 @@ kubeseal --fetch-cert
 ```
 # Build secret, the data must be base64 encoded
 
-kubeseal --fetch-cert --controller-name=sealed-secrets-controller --controller-namespace=sealed-secrets-contoller > ss.pem
+kubeseal --fetch-cert --controller-name=sealed-secrets-controller --controller-namespace=sealed-secrets > ss.pem
 
 kubeseal --cert ss.pem < test-secret.yaml > apps/secrets/SEALED-test-secret.yaml
 

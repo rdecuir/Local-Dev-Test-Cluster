@@ -7,13 +7,13 @@ spec:
   project: default                                # Reference to your AppProject
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
-    namespace: sealed-secrets-contoller                     # Target namespace for the app
+    namespace: sealed-secrets                     # Target namespace for the app
   
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
       ref: values
-      path: apps/sealed-secrets/templates # test this to allow templates in an app container folder
+      path: apps/secrets
       
     - repoURL: https://bitnami-labs.github.io/sealed-secrets
       chart: sealed-secrets

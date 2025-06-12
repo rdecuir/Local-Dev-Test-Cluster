@@ -84,7 +84,7 @@ install_sealed_secrets() {
     #     --cert="../apps/sealed-secrets/sealed-secrets.pem" \
     #     --key="../apps/sealed-secrets/sealed-secrets.key" \
     #     -n sealed-secrets
-    kubectl apply -f ../sealed-secrets-sealing-key.yaml > /dev/null
+    kubectl apply -f ../example-secrets/sealed-secrets-sealing-key.yaml > /dev/null
 
     step "Restarting controller to pick up the new key"
     kubectl delete pod -l app.kubernetes.io/name=sealed-secrets -n sealed-secrets
