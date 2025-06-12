@@ -61,3 +61,9 @@ kubectl get secret test-secret.yaml -n secrets -o jsonpath="{.data.superSecretPa
 kubectl -n sealed-secrets get secret sealed-secrets-{} -o yaml > sealed-secrets-key.yaml
 
 ```
+
+### Creating Sealing Key
+```
+openssl genrsa -out sealed-secrets.key 4096
+openssl req -x509 -new -nodes -key sealed-secrets.key -subj "/CN=sealed-secrets" -days 3650 -out sealed-secrets.pem
+```

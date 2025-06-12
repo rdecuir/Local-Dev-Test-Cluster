@@ -40,6 +40,10 @@ create_cluster() {
 
     helm repo update > /dev/null
 
+    step "Creating and labeling the argocd namespace"
+    kubectl create namespace argocd || true
+    kubectl label namespace argocd istio-injection=enabled --overwrite
+
     install_sealed_secrets
 
     if [[ "$CLUSTER" == "istio" ]]; then
@@ -65,6 +69,7 @@ delete_cluster() {
 
 install_sealed_secrets() {
     step "Installing Sealed Secrets controller"
+    kubectl create namespace secrets || true
 
     helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets > /dev/null
     helm repo update > /dev/null
@@ -91,6 +96,8 @@ install_sealed_secrets() {
     step "Restarting controller to pick up the new key"
     kubectl delete pod -l app.kubernetes.io/name=sealed-secrets -n sealed-secrets
     success "Sealed Secrets installed and custom key applied"
+
+    kubectl apply -f ../apps/secrets/ > /dev/null
 }
 
 install_istio() {
@@ -118,12 +125,6 @@ install_istio() {
 }
 
 install_argocd() {
-    if [[ "$CLUSTER" == "istio" ]]; then
-        step "Creating and labeling the argocd namespace for Istio sidecar injection"
-        kubectl create namespace argocd || true
-        kubectl label namespace argocd istio-injection=enabled --overwrite
-    fi
-
     step "Installing Argo CD"
 
     helm repo add argo https://argoproj.github.io/argo-helm > /dev/null
