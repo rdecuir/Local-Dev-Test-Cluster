@@ -38,6 +38,8 @@ create_cluster() {
     kubectl wait --for=condition=Ready nodes --all --timeout=60s > /dev/null
     success "All nodes ready."
 
+    helm repo update > /dev/null
+
     if [[ "$CLUSTER" == "istio" ]]; then
         install_istio
     fi
@@ -98,7 +100,7 @@ install_argocd() {
     helm install argocd argo/argo-cd \
         --namespace argocd \
         --create-namespace \
-        --version 3.0.6 \
+        --version 8.0.17 \
         --values ../apps/argocd/values/values.yaml > /dev/null
 
     if [[ "$CLUSTER" == "istio" ]]; then
