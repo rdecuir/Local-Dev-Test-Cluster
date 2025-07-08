@@ -4,6 +4,5 @@ metadata:
   name: rabbitmqcluster-sample
 spec:
   replicas: 3
-  resources:
-    secretReference:
-      name: rabbitmq-user
+  auth:
+    existingPasswordSecret: rabbitmq-user

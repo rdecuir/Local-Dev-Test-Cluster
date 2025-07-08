@@ -75,6 +75,7 @@ install_sealed_secrets() {
     helm repo update > /dev/null
 
     kubectl create namespace sealed-secrets || true
+    kubectl create namespace rabbitmq || true
     kubectl apply -f ../example-secrets/sealed-secrets-sealing-key.yaml > /dev/null
 
     helm install sealed-secrets sealed-secrets/sealed-secrets \
