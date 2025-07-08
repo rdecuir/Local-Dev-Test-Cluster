@@ -4,6 +4,13 @@ metadata:
   name: rabbitmqcluster-sample
 spec:
   replicas: 3
-  secretBackend:
-    externalSecret:
-      name: rabbitmq-user
+  rabbitmq:
+    additionalConfigurations:
+      default.conf: |
+        default_user = admin
+        default_pass = admin
+      default_user: admin
+      default_pass: admin
+  # secretBackend:
+  #   externalSecret:
+  #     name: rabbitmq-user
