@@ -75,26 +75,12 @@ install_sealed_secrets() {
     helm repo update > /dev/null
 
     kubectl create namespace sealed-secrets || true
+    kubectl apply -f ../example-secrets/sealed-secrets-sealing-key.yaml > /dev/null
 
     helm install sealed-secrets sealed-secrets/sealed-secrets \
         --namespace sealed-secrets \
-        --version 2.17.2 > /dev/null
-        # --values ../apps/sealed-secrets/values.yaml > /dev/null
-
-    step "Waiting for Sealed Secrets controller to be ready..."
-    kubectl rollout status deployment sealed-secrets -n sealed-secrets --timeout=120s > /dev/null
-
-    step "Injecting custom sealing key for cluster-wide consistency"
-
-    kubectl delete secret -n sealed-secrets sealed-secrets-key 2>/dev/null || true
-    # kubectl create secret tls sealed-secrets-key \
-    #     --cert="../apps/sealed-secrets/sealed-secrets.pem" \
-    #     --key="../apps/sealed-secrets/sealed-secrets.key" \
-    #     -n sealed-secrets
-    kubectl apply -f ../example-secrets/sealed-secrets-sealing-key.yaml > /dev/null
-
-    step "Restarting controller to pick up the new key"
-    kubectl delete pod -l app.kubernetes.io/name=sealed-secrets -n sealed-secrets
+        --version 2.17.2 > /dev/null \
+        --values ../apps/sealed-secrets/values/values.yaml > /dev/null
     success "Sealed Secrets installed and custom key applied"
 
     kubectl apply -f ../apps/secrets/ > /dev/null

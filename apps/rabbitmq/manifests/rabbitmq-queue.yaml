@@ -6,8 +6,8 @@ spec:
   name: my-quorum-queue
   vhost: "/"
   type: quorum
-  arguments:
-    x-queue-type: quorum
+  # arguments:
+  #   x-queue-type: quorum
   durable: true
   deletionPolicy: retain
   rabbitmqClusterReference:

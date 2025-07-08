@@ -1,0 +1,3 @@
+sealedSecrets:
+  createSecret: false  # don't auto-create the key secret and no rotation will occur
+secretName: sealed-secrets-key-rdecuir
