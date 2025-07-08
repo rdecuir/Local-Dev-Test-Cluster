@@ -1,0 +1,12 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmqcluster-sample
+spec:
+  replicas: 3
+  queues:
+  - name: my-quorum-queue
+    spec:
+      durable: true
+      arguments:
+        x-queue-type: quorum
