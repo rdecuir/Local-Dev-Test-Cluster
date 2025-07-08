@@ -1,0 +1,15 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: my-quorum-queue
+spec:
+  name: my-quorum-queue
+  vhost: "/"
+  type: quorum
+  arguments:
+    x-queue-type: quorum
+  durable: true
+  deletionPolicy: retain
+  rabbitmqClusterReference:
+    name: my-cluster
+      

@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: rabbitmq-vs
+  namespace: rabbitmq
+spec:
+  hosts:
+  - "rabbitmq.localhost"
+  gateways:
+  - istio-system/ingress-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: rabbitmqcluster-sample
+        port:
+          number: 80

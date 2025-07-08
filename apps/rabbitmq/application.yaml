@@ -13,14 +13,7 @@ spec:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
       ref: values
-
-    - repoURL: https://charts.bitnami.com/bitnami
-      chart: rabbitmq
-      targetRevision: 4.4.24
-      helm:
-        ignoreMissingValueFiles: true
-        valueFiles:
-          - $values/apps/rabbitmq-operator/values/values.yaml
+      path: apps/rabbitmq/manifests
 
   syncPolicy:
     automated:

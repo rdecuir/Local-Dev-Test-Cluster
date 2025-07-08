@@ -20,3 +20,9 @@ spec:
       - name: istio-ingressgateway
         namespace: istio-system
         port: 80
+  - match: Host(`rabbitmq.localhost`)
+    kind: Rule
+    services:
+      - name: istio-ingressgateway
+        namespace: istio-system
+        port: 80

@@ -4,9 +4,3 @@ metadata:
   name: rabbitmqcluster-sample
 spec:
   replicas: 3
-  queues:
-  - name: my-quorum-queue
-    spec:
-      durable: true
-      arguments:
-        x-queue-type: quorum
