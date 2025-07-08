@@ -6,4 +6,4 @@ spec:
   replicas: 3
   secretBackend:
     externalSecret:
-      name: rabbitmq-user
+      name: rabbitmq-user-2
