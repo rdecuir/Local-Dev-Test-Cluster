@@ -16,4 +16,4 @@ spec:
     - destination:
         host: rabbitmqcluster-sample
         port:
-          number: 80
+          number: 15672

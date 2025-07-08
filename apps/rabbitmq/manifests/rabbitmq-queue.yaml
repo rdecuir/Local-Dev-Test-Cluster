@@ -11,5 +11,5 @@ spec:
   durable: true
   deletionPolicy: retain
   rabbitmqClusterReference:
-    name: my-cluster
+    name: rabbitmqcluster-sample
       
