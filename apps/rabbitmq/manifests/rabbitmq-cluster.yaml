@@ -5,5 +5,5 @@ metadata:
 spec:
   replicas: 3
   secretBackend:
-    externalSecrets:
+    externalSecret:
       name: rabbitmq-user
