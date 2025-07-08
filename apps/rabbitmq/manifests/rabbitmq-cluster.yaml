@@ -4,10 +4,6 @@ metadata:
   name: rabbitmqcluster-sample
 spec:
   replicas: 3
-  defaultUser:
-    secretReference:
+  secretBackend:
+    externalSecrets:
       name: rabbitmq-user
-      namespace: rabbitmq
-      keys:
-        username: rabbitmq-username
-        password: rabbitmq-password
