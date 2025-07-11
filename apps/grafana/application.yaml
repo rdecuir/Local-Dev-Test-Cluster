@@ -15,7 +15,7 @@ spec:
       ref: values
       path: apps/grafana/manifests
 
-    - repoURL: https://grafana.github.io/helm-charts/grafana
+    - repoURL: https://grafana.github.io/helm-charts
       chart: grafana
       targetRevision: 9.2.10
       helm:
