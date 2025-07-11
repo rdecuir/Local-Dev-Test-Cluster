@@ -1,0 +1,22 @@
+deploymentMode: SingleBinary
+
+loki:
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    type: filesystem
+    filesystem:
+      directory: /var/loki
+
+  schemaConfig:
+    configs:
+      - from: 2023-01-01
+        store: boltdb
+        object_store: filesystem
+        schema: v11
+        index:
+          prefix: index_
+          period: 24h
+
+  auth_enabled: false
