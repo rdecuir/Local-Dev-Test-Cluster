@@ -14,6 +14,6 @@ spec:
         prefix: /
     route:
     - destination:
-        host: grafana-service
+        host: grafana
         port:
           number: 3000
