@@ -19,9 +19,9 @@ loki:
         index:
           prefix: index_
           period: 24h
-  read:
-    enabled: false
-  write:
-    enabled: false
-  backend:
-    enabled: false
+read:
+  enabled: false
+write:
+  enabled: false
+backend:
+  enabled: false
