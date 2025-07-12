@@ -26,3 +26,6 @@ write:
   replicas: 0
 backend:
   replicas: 0
+
+canary:
+  enabled: false
