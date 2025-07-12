@@ -21,7 +21,7 @@ spec:
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
-          - $values/apps/grafana/values/values.yaml
+          - $values/apps/grafana/values/common.yaml
 
   syncPolicy:
     automated:

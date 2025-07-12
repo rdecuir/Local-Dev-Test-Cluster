@@ -20,7 +20,7 @@ spec:
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
-          - $values/apps/promtail/values/values.yaml
+          - $values/apps/promtail/values/common.yaml
 
   syncPolicy:
     automated:
