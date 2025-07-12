@@ -8,3 +8,18 @@ adminPassword: admin
 #   existingSecret: ""
 #   userKey: admin-user
 #   passwordKey: admin-password
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki.loki.svc.cluster.local:3100
+        isDefault: false
+        jsonData:
+          derivedFields:
+            - name: trace_id
+              matcherRegex: "trace_id=(\\w+)"
+              url: "$${__value.raw}"
