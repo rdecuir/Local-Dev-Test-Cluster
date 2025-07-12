@@ -15,7 +15,7 @@ spec:
       ref: values
       path: apps/minio
 
-    - repoURL: https://grafana.github.io/helm-charts
+    - repoURL: registry-1.docker.io/bitnamicharts/minio
       chart: minio
       targetRevision: 17.0.11
       helm:
