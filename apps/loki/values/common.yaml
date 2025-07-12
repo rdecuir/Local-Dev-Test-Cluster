@@ -2,6 +2,9 @@ deploymentMode: SingleBinary
 # TODO: Come back in and use minio
 loki:
   auth_enabled: false
+  commonConfig:
+    replication_factor: 1
+
   storage:
     type: filesystem
     filesystem:
@@ -16,6 +19,3 @@ loki:
         index:
           prefix: index_
           period: 24h
-
-  commonConfig:
-    replication_factor: 1
