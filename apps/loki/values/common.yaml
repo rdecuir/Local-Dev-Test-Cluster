@@ -1,4 +1,6 @@
 deploymentMode: SingleBinary
+singleBinary:
+  replicas: 1
 # TODO: Come back in and use minio
 loki:
   auth_enabled: false
@@ -19,9 +21,9 @@ loki:
         index:
           prefix: index_
           period: 24h
-read:
-  enabled: false
-write:
-  enabled: false
-backend:
-  enabled: false
+# read:
+#   enabled: false
+# write:
+#   enabled: false
+# backend:
+#   enabled: false
