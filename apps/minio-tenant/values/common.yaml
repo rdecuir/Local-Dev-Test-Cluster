@@ -1,0 +1,9 @@
+tenant:
+  certificate:
+    requestAutoCert: false
+  configSecret:
+    accessKey: admin
+    secretKey: adminadmin
+  env:
+    - name: CONSOLE_SECURE_TLS_REDIRECT
+      value: "false"

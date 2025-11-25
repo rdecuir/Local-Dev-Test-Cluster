@@ -1,27 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: minio
+  name: minio-tenant
   namespace: argocd
 spec:
   project: default                                # Reference to your AppProject
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
-    namespace: minio                         # Target namespace for the app
+    namespace: minio-tenant                         # Target namespace for the app
   
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
       ref: values
-      path: apps/minio
 
-    - repoURL: registry-1.docker.io/bitnamicharts
-      chart: minio
-      targetRevision: 17.0.11
+    - repoURL: 
+      chart: tenant
+      targetRevision: 7.1.1
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
-          - $values/apps/minio/values/common.yaml
+          - $values/apps/minio-tenant/values/common.yaml
 
   syncPolicy:
     automated:

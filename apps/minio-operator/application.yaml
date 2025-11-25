@@ -14,9 +14,9 @@ spec:
       targetRevision: main
       ref: values
 
-    - repoURL: registry-1.docker.io/bitnamicharts
-      chart: minio-operator
-      targetRevision: 0.2.4
+    - repoURL: https://operator.min.io/
+      chart: operator
+      targetRevision: 7.1.1
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
