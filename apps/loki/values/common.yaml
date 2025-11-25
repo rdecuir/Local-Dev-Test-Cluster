@@ -16,9 +16,9 @@ loki:
       accessKeyId: minio
       secretAccessKey: miniominio
       s3ForcePathStyle: true
-      bucketNames:
-        chunks: loki-chunks
-        ruler: loki-ruler
+    bucketNames:
+      chunks: loki-chunks
+      ruler: loki-ruler
 
   schemaConfig:
     configs:
