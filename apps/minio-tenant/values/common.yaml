@@ -4,6 +4,32 @@ tenant:
   configSecret:
     accessKey: admin
     secretKey: adminadmin
+  users:
+    - name: minio-test-creds
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
+    - name: MINIO_SERVER_URL
+      value: ""
+    - name: MINIO_BROWSER_REDIRECT_URL
+      value: ""
+ingress:
+  console:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      kubernetes.io/ingress.class: traefik
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    host: 
+    path: /
+    pathType: Prefix
+
+extraResources:
+  - |
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: minio-test-creds
+    stringData:
+      CONSOLE_ACCESS_KEY: minio
+      CONSOLE_SECRET_KEY: miniominio
