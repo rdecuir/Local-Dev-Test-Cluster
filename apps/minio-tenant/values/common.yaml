@@ -1,9 +1,9 @@
 tenant:
   certificate:
     requestAutoCert: false
-  configSecret:
-    accessKey: admin
-    secretKey: adminadmin
+  # configSecret:
+  #   accessKey: admin
+  #   secretKey: adminadmin
   users:
     - name: minio-test-creds
   env:
