@@ -22,7 +22,7 @@
 
 ## Bootstrap a cluster
 
-1. `./bootstrap.sh up cluster1`
+1. `./bootstrap.sh up [{none}|dev|cluster1]`
 1. Then navigate to http://argocd.localhost, you will need to wait roughly 5-8 mins for everything to complete and for argocd to come up.
 
 ## Patterns
@@ -32,7 +32,7 @@ The current use of this cluster configuration is Traefik handles external access
 # Notes
 Need to remove istio this is not the set up of the office cluster
 
-./bootstrap/bootstrap.sh up 
+./bootstrap/bootstrap.sh up
 
 - Need to fix goldilock with ingress, need to use built in ingress for it and argocd
 - Need to address RabbitMQ bitnami BS

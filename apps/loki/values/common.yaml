@@ -17,7 +17,7 @@ loki:
       secret_access_key: miniominio
       s3forcepathstyle: true
       bucketnames:
-        chucks: loki-chucks
+        chunks: loki-chunks
         ruler: loki-ruler
 
   schemaConfig:
