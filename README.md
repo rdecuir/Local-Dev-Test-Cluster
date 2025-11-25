@@ -29,4 +29,10 @@
 The current use of this cluster configuration is Traefik handles external access control and Istio handles internal traffic as the service mesh. Yes Istio could replace traefik completely, but we need to honor what is currently in place and working.
 
 
-Need to remove istio
+# Notes
+Need to remove istio this is not the set up of the office cluster
+
+./bootstrap.sh up dev ingress
+
+maybe not
+

@@ -9,10 +9,6 @@ tenant:
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
-    # - name: MINIO_SERVER_URL
-    #   value: ""
-    # - name: MINIO_BROWSER_REDIRECT_URL
-    #   value: ""
 ingress:
   console:
     enabled: true
@@ -20,7 +16,7 @@ ingress:
     annotations:
       kubernetes.io/ingress.class: traefik
       traefik.ingress.kubernetes.io/router.entrypoints: web
-    host: traefik.localhost
+    host: minio.localhost
     path: /
     pathType: Prefix
 
