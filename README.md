@@ -35,3 +35,4 @@ Need to remove istio this is not the set up of the office cluster
 ./bootstrap/bootstrap.sh up 
 
 - Need to fix goldilock with ingress, need to use built in ingress for it and argocd
+- Need to address RabbitMQ bitnami BS
