@@ -32,7 +32,6 @@ The current use of this cluster configuration is Traefik handles external access
 # Notes
 Need to remove istio this is not the set up of the office cluster
 
-./bootstrap.sh up dev ingress
+./bootstrap/bootstrap.sh up 
 
-maybe not
-
+- Need to fix goldilock with ingress, need to use built in ingress for it and argocd

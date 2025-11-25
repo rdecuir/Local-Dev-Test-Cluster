@@ -2,16 +2,6 @@ goldilocks:
   vpa:
     enabled: true
 
-# traefikRoute:
-#   name: goldilocks
-#   namespace: goldilocks
-#   service: goldilocks-dashboard
-
-# traefikIngress:
-#   name: goldilocks
-#   namespace: goldilocks
-#   service: goldilocks-dashboard
-
 customConfigMap:
   name: example-config-2-override
   log_level: debug

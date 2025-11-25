@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.customConfigMap.name }}
-  namespace: goldilocks
-data:
-  log_level: {{ .Values.customConfigMap.log_level | quote }}
-  feature_enabled: {{ .Values.customConfigMap.feature_enabled | quote }}

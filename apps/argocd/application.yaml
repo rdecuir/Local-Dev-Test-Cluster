@@ -17,7 +17,6 @@ spec:
       ignoreMissingValueFiles: true
       valueFiles:
         - ../values/values.yaml
-        - ../values/istio-values.yaml
 
   syncPolicy:
     automated:

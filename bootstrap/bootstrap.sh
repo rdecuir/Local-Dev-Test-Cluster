@@ -5,7 +5,6 @@ set -e
 
 CLUSTER_NAME="local-k3d"
 ARGO_NAMESPACE="argocd"
-GATEWAY_MODE="${3:-gateway}"  # Default to 'gateway' if not provided
 CLUSTER="${2:-dev}"
 
 # Color codes
@@ -21,17 +20,12 @@ error()   { echo -e "${RED}[ERROR]${NC} $1"; }
 success() { echo -e "${GREEN}[✔]${NC} $1"; }
 step()    { echo -e "${YELLOW}[➤]${NC} $1"; }
 
-if [[ "$CLUSTER" == "istio" ]]; then
-    GATEWAY_MODE="ingress"
-fi
 
 create_cluster() {
     step "Creating k3d cluster: ${CLUSTER_NAME}"
-    if [[ "$GATEWAY_MODE" == "gateway" ]]; then
-        k3d cluster create "$CLUSTER_NAME" --agents 3 --port "80:80@loadbalancer" --port "443:443@loadbalancer" --k3s-arg "--disable=traefik@server:*" > /dev/null
-    else
-        k3d cluster create "$CLUSTER_NAME" --agents 3 --port "80:80@loadbalancer" --port "443:443@loadbalancer" > /dev/null
-    fi
+
+    k3d cluster create "$CLUSTER_NAME" --agents 3 --port "80:80@loadbalancer" --port "443:443@loadbalancer" > /dev/null
+
     success "Cluster created."
 
     step "Waiting for nodes to be ready..."
@@ -46,17 +40,7 @@ create_cluster() {
 
     install_sealed_secrets
 
-    if [[ "$CLUSTER" == "istio" ]]; then
-        install_istio
-    fi
-
     install_argocd
-
-    if [[ "$GATEWAY_MODE" == "gateway" ]]; then
-        install_api_gateway
-    else
-        step "Skipping API Gateway installation (mode: $GATEWAY_MODE)"
-    fi
 
     deploy_argo_apps
 }
@@ -76,43 +60,15 @@ install_sealed_secrets() {
 
     kubectl create namespace sealed-secrets || true
     kubectl create namespace rabbitmq || true
-    kubectl apply -f ../example-secrets/sealed-secrets-sealing-key.yaml > /dev/null
+    kubectl apply -f example-secrets/sealed-secrets-sealing-key.yaml > /dev/null
 
     helm install sealed-secrets sealed-secrets/sealed-secrets \
         --namespace sealed-secrets \
         --version 2.17.2 > /dev/null \
-        --values ../apps/sealed-secrets/values/values.yaml > /dev/null
+        --values apps/sealed-secrets/values/values.yaml > /dev/null
     success "Sealed Secrets installed and custom key applied"
 
-    kubectl apply -f ../apps/secrets/ > /dev/null
-}
-
-install_istio() {
-    step "Starting Istio installation"
-
-    ISTIO_VERSION="1.22.0"
-
-    if ! command -v istioctl &> /dev/null; then
-        step "Downloading istioctl"
-        curl -sSL https://istio.io/downloadIstio | ISTIO_VERSION=1.22.0 TARGET_ARCH=arm64 sh - > /dev/null 2>&1
-
-        step "Installing istioctl"
-        sudo mv istio-*/bin/istioctl /usr/local/bin/
-    fi
-
-    step "Istio precheck"
-    istioctl x precheck
-
-    step "Installing Istio"
-    istioctl install \
-        --set profile=demo \
-        --set values.gateways.istio-ingressgateway.type=ClusterIP \
-        -y
-    
-    kubectl apply -f ../apps/istio/manifests
-
-    step "Cleaning up..."
-    rm -rf istio-${ISTIO_VERSION}
+    kubectl apply -f apps/secrets/ > /dev/null
 }
 
 install_argocd() {
@@ -125,11 +81,11 @@ install_argocd() {
         --namespace argocd \
         --create-namespace \
         --version 8.0.17 \
-        --values ../apps/argocd/values/values.yaml > /dev/null
+        --values apps/argocd/values/values.yaml > /dev/null
 
     if [[ "$CLUSTER" == "istio" ]]; then
         step "Applying Istio VirtualService for Argo CD"
-        kubectl apply -f ../apps/argocd/helm/templates/virtual-service.yaml
+        kubectl apply -f apps/argocd/helm/templates/virtual-service.yaml
     fi
 
     # kubectl delete job argocd-redis-secret-init -n argocd
@@ -142,20 +98,10 @@ install_argocd() {
     step "Access Argo CD UI at: ${BLUE}http://argocd.localhost${NC}"
 }
 
-install_api_gateway() {
-    step "Installing API Gateway"
-    
-    kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v1.6.2" | kubectl apply -f - > /dev/null
-    helm install ngf oci://ghcr.io/nginx/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway > /dev/null 2>&1
-    kubectl apply -f ../research-topics/gateway-api-nginx/argocd-gateway-api.yaml > /dev/null
-
-    success "API Gateway installed."
-}
-
 deploy_argo_apps() {
     step "Deploying Argo CD apps based on cluster inventory..."
 
-    for app_dir in ../apps/*/; do
+    for app_dir in apps/*/; do
         app=$(basename "$app_dir")
         clusters_file="${app_dir}/clusters.yaml"
         argo_app_path="${app_dir}/application.yaml"
@@ -186,11 +132,9 @@ deploy_argo_apps() {
 }
 
 usage() {
-    echo -e "${YELLOW}Usage:${NC} $0 {up|down} [dev|istio] [gateway|ingress]"
+    echo -e "${YELLOW}Usage:${NC} $0 {up|down} [dev|istio]"
     echo "       up      - Create cluster and optionally install API Gateway (default: gateway)"
     echo "       down    - Delete the cluster"
-    echo "       gateway - Use API Gateway"
-    echo "       ingress - Skip API Gateway (or configure ingress manually)"
     exit 1
 }
 

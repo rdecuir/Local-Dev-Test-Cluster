@@ -1,4 +1,0 @@
-customConfigMap:
-  name: example-config-2
-  log_level: debug
-  feature_enabled: "true"
