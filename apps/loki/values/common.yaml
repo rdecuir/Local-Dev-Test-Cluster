@@ -13,10 +13,10 @@ loki:
     type: s3
     s3:
       endpoint: http://minio-tenant.minio-tenant.svc.cluster.local:9000
-      access_key_id: minio
-      secret_access_key: miniominio
-      s3forcepathstyle: true
-      bucketnames:
+      accessKeyId: minio
+      secretAccessKey: miniominio
+      s3ForcePathStyle: true
+      bucketNames:
         chunks: loki-chunks
         ruler: loki-ruler
 
