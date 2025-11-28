@@ -1,5 +1,3 @@
-deploymentMode: SingleBinary
-
 # TODO: Come back in and use minio
 loki:
   auth_enabled: false
@@ -37,4 +35,6 @@ backend:
   replicas: 1
 
 lokiCanary:
+  enabled: false
+test:
   enabled: false
