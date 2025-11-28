@@ -10,9 +10,9 @@ loki:
     #   directory: /var/loki
     type: s3
     s3:
-      endpoint: http://minio-tenant.minio-tenant.svc.cluster.local:9000
-      accessKeyId: minio
-      secretAccessKey: minio123
+      endpoint: http://minio.minio-tenant.svc.cluster.local
+      accessKeyId: loki
+      secretAccessKey: loki1234
       s3ForcePathStyle: true
     bucketNames:
       chunks: loki-chunks
