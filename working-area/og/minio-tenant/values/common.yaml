@@ -1,11 +1,11 @@
 tenant:
   certificate:
     requestAutoCert: false
-  configSecret:
-    accessKey: minio
-    secretKey: minio123
-  users:
-    - name: minio-test-creds
+  # configSecret:
+  #   accessKey: admin
+  #   secretKey: adminadmin
+  # users:
+  #   - name: minio-test-creds
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
@@ -20,12 +20,12 @@ ingress:
     path: /
     pathType: Prefix
 
-extraResources:
-  - |
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: minio-test-creds
-    stringData:
-      CONSOLE_ACCESS_KEY: minio
-      CONSOLE_SECRET_KEY: miniominio
+# extraResources:
+#   - |
+#     apiVersion: v1
+#     kind: Secret
+#     metadata:
+#       name: minio-test-creds
+#     stringData:
+#       CONSOLE_ACCESS_KEY: minio
+#       CONSOLE_SECRET_KEY: miniominio

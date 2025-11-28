@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: minio-tenant
+  name: minio-operator
   namespace: argocd
 spec:
   project: default                                # Reference to your AppProject
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
-    namespace: minio-tenant                         # Target namespace for the app
+    namespace: minio-operator                           # Target namespace for the app
   
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
@@ -15,12 +15,12 @@ spec:
       ref: values
 
     - repoURL: https://operator.min.io/
-      chart: tenant
-      targetRevision: 7.1.1
+      chart: operator
+      targetRevision: 5.0.18
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
-          - $values/apps/minio-tenant/values/common.yaml
+          - $values/apps/minio-operator/values/values.yaml
 
   syncPolicy:
     automated:
