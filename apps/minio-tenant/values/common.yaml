@@ -4,8 +4,8 @@ tenant:
   configSecret:
     accessKey: minio
     secretKey: minio123
-  users:
-    - name: minio-test-creds
+  # users:
+  #   - name: minio-test-creds
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
