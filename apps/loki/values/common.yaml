@@ -30,11 +30,11 @@ loki:
           prefix: index_
           period: 24h
 read:
-  replicas: 0
+  replicas: 1
 write:
-  replicas: 0
+  replicas: 1
 backend:
-  replicas: 0
+  replicas: 1
 
-canary:
+lokiCanary:
   enabled: false
