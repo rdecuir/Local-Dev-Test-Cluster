@@ -1,6 +1,6 @@
 config:
   clients:
-    - url: http://loki.loki.svc.cluster.local:3100/loki/api/v1/push
+    - url: http://loki-write.loki.svc.cluster.local:3100/loki/api/v1/push
   snippets:
     extraRelabelConfigs:
        # https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#kubernetes_sd_config
