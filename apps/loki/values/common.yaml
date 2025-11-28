@@ -22,7 +22,7 @@ loki:
     configs:
       - from: 2025-07-01
         store: tsdb
-        object_store: filesystem
+        object_store: s3
         schema: v13
         index:
           prefix: index_
