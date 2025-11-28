@@ -1,12 +1,34 @@
-config:
-  clients:
-    - url: http://loki-write.loki.svc.cluster.local:3100/loki/api/v1/push
-  snippets:
-    extraRelabelConfigs:
-       # https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#kubernetes_sd_config
-      # - source_labels: [__meta_kubernetes_namespace]
-      #   regex: sealed-secrets
-      #   action: drop
+server:
+  http_listen_port: 3101
+  grpc_listen_port: 9095
+
+positions:
+  filename: /tmp/positions.yaml   # keeps track of offsets
+
+clients:
+  - url: http://loki-write.loki.svc.cluster.local:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: kubernetes-pods
+    pipeline_stages:
+      - docker: {}
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
       - source_labels: [__meta_kubernetes_namespace]
         regex: minio-operator
         action: drop
+      - source_labels: [__meta_kubernetes_namespace]
+        regex: sealed-secrets
+        action: drop
+    # Tail all container logs under /var/log/pods
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: kubernetes-pods
+          __path__: /var/log/pods/**/*.log
+
+    # Ensure rotated/deleted files are retried
+    file_sd_configs:
+      - refresh_interval: 10s
