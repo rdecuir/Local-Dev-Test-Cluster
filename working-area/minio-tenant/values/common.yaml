@@ -2,10 +2,10 @@ tenant:
   certificate:
     requestAutoCert: false
   configSecret:
-    accessKey: admin
-    secretKey: adminadmin
-  users:
-    - name: minio-test-creds
+    accessKey: minio
+    secretKey: minio123
+  # users:
+  #   - name: minio-test-creds
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
