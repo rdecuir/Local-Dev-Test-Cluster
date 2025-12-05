@@ -4,7 +4,6 @@ tenant:
   configSecret:
     name: minio-test-creds
     existingSecret: true
-  secrets: {}
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
@@ -31,3 +30,4 @@ extraResources:
         export MINIO_BROWSER="on"
         export MINIO_ROOT_USER=root
         export MINIO_ROOT_PASSWORDS=root
+secrets: {}
