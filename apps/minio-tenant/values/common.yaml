@@ -1,3 +1,4 @@
+secrets: {}
 tenant:
   certificate:
     requestAutoCert: false
