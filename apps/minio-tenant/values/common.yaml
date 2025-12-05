@@ -1,4 +1,4 @@
-secrets: {}
+secrets: ~ # Freaking Minio bug... i hate minio
 tenant:
   certificate:
     requestAutoCert: false
