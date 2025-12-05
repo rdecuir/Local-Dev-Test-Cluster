@@ -1,13 +1,15 @@
-secrets: ~ # Freaking Minio bug... i hate minio
+secrets:
+  name: minio-tenant-env-configuration
+    existingSecret: true
 tenant:
   certificate:
     requestAutoCert: false
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
-  configSecret:
-    name: minio-tenant-env-configuration
-    existingSecret: true
+  # configSecret:
+  #   name: minio-tenant-env-configuration
+  #   existingSecret: true
 ingress:
   console:
     enabled: true
