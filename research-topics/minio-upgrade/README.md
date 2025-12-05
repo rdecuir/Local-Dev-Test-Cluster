@@ -4,6 +4,13 @@ Looks like the tenant console is causing problems in the whole coder being weird
 
 Yup it works here, so wasted a day trying to get it to work in coder
 
+## UPDATE 12/5
+Testing minio-operator upgrade first then upgrading minio-tenant worked, existing data not lost.
+I can see the removal of the console ui from the operator, and the existing console UI for minio tenants.
+Not sure why people were concerned easy transition. New ingress tho.
+
+The older version of minio was very broken, I was struggling to replace the secret and disable the creation on deployment and that was a mess, new version of minio successful honored the helm chart and bugs from older version are gone.
+
 ## Does it work this way for user, bucket, and policy creation
 ```
 apiVersion: operator.min.io/v1
