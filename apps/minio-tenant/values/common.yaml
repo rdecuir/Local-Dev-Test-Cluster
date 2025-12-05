@@ -1,9 +1,6 @@
 tenant:
   certificate:
     requestAutoCert: false
-  configSecret:
-    accessKey: root
-    secretKey: rootroot
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
