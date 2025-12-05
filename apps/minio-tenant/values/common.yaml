@@ -6,6 +6,8 @@ tenant:
     secretKey: rootroot
   users:
     - name: minio-test-creds
+  buckets:
+    - name: ryans-bucket-1
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
@@ -29,13 +31,3 @@ extraResources:
     stringData:
       CONSOLE_ACCESS_KEY: admin
       CONSOLE_SECRET_KEY: admin
-  - |
-    apiVersion: operator.min.io/v1
-    kind: MinioBucket
-    metadata:
-      name: ryans-bucket-1
-      namespace: minio-tenant
-    spec:
-      tenant: minio-tenant
-      name: ryans-bucket-1
-      region: us-east-1
