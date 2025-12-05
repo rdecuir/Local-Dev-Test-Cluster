@@ -1,8 +1,7 @@
 tenant:
   certificate:
     requestAutoCert: false
-  configSecret:
-    existingSecret: minio-test-creds
+  existingSecret: minio-test-creds
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
