@@ -18,13 +18,3 @@ ingress:
     host: minio.localhost
     path: /
     pathType: Prefix
-
-extraResources:
-  - |
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: minio-test-creds
-    stringData:
-      CONSOLE_ACCESS_KEY: admin
-      CONSOLE_SECRET_KEY: adminadmin
