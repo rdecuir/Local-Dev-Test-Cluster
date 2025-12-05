@@ -2,8 +2,8 @@ tenant:
   certificate:
     requestAutoCert: false
   configSecret:
-    accessKey: root
-    secretKey: rootroot
+    accessKey: minio
+    secretKey: minio123
   users:
     - name: minio-test-creds
   buckets:
