@@ -12,11 +12,12 @@ spec:
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
+      path: apps/minio-operator/manifests
       ref: values
 
     - repoURL: https://operator.min.io/
       chart: operator
-      targetRevision: 7.1.1
+      targetRevision: 5.0.18
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
