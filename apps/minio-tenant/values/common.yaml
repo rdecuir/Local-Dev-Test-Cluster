@@ -20,7 +20,7 @@ extraResources:
     apiVersion: v1
     kind: Secret
     metadata:
-      name: myminio-env-configuration
+      name: myminio-env-secret
     stringData:
       config.env |
         export MINIO_STORAGE_CLASS_STANDARD='EC:1'
