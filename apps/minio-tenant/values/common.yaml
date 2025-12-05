@@ -1,9 +1,8 @@
 tenant:
   certificate:
-    requestAutoCert: false
-  configuration:
-    name: minio-test-creds
+    requestAutoCert: false    
   configSecret:
+    name: minio-test-creds
     existingSecret: true
   env:
     - name: CONSOLE_SECURE_TLS_REDIRECT
@@ -18,17 +17,3 @@ ingress:
     host: minio.localhost
     path: /
     pathType: Prefix
-
-extraResources:
-  - |
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: minio-test-creds
-    stringData:
-      config.env: |-
-        export MINIO_STORAGE_CLASS_STANDARD="EC:1"
-        export MINIO_BROWSER="on"
-        export MINIO_ROOT_USER=root
-        export MINIO_ROOT_PASSWORDS=root
-secrets: {}
