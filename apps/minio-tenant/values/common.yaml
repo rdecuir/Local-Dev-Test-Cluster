@@ -30,4 +30,4 @@ extraResources:
       name: minio-test-creds
     stringData:
       CONSOLE_ACCESS_KEY: admin
-      CONSOLE_SECRET_KEY: admin
+      CONSOLE_SECRET_KEY: adminadmin
