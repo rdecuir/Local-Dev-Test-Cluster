@@ -6,7 +6,7 @@ tenant:
     - name: CONSOLE_SECURE_TLS_REDIRECT
       value: "false"
   configSecret:
-    name: minio-tenant-env-configuration
+    name: myminio-env-configuration
     existingSecret: true
 ingress:
   console:
