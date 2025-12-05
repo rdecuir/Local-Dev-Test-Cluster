@@ -2,8 +2,8 @@ tenant:
   certificate:
     requestAutoCert: false
   configSecret:
-    accessKey: minio
-    secretKey: minio123
+    name: minio-tenant-env-configuration
+    existingSecret: true
   users:
     - name: minio-test-creds
   buckets:
