@@ -1,6 +1,6 @@
 secrets:
   name: minio-tenant-env-configuration
-    existingSecret: true
+  existingSecret: true
 tenant:
   certificate:
     requestAutoCert: false
