@@ -12,6 +12,7 @@ spec:
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
+      path: apps/minio-tenant/manifests
       ref: values
 
     - repoURL: https://operator.min.io/
