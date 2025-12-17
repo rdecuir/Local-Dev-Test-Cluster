@@ -14,8 +14,8 @@ spec:
       targetRevision: main
       ref: values
 
-    - repoURL: oci://ghcr.io/prometheus-community/charts
-      chart: kube-prom-stack
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
       targetRevision: 80.4.2
       helm:
         ignoreMissingValueFiles: true
