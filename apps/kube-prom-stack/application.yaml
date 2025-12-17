@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prom-stack
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  
+  sources:
+    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+      targetRevision: main
+      ref: values
+
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prom-stack
+      targetRevision: 80.4.2
+      helm:
+        ignoreMissingValueFiles: true
+        valueFiles:
+          - $values/apps/kube-prom-stack/values/values.yaml
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
