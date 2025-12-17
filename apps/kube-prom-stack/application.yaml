@@ -14,7 +14,7 @@ spec:
       targetRevision: main
       ref: values
 
-    - repoURL: https://prometheus-community.github.io/helm-charts
+    - repoURL: oci://ghcr.io/prometheus-community/charts
       chart: kube-prom-stack
       targetRevision: 80.4.2
       helm:
