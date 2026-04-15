@@ -1,12 +1,10 @@
-{{- $global_storage_class_name := .Values.storage_class_name -}}
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pcap-claim
 spec:
-  storageClassName: {{ $global_storage_class_name }}
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -20,7 +18,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: zeek-claim
 spec:
-  storageClassName: {{ $global_storage_class_name }}
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -34,7 +32,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: suricata-claim-offline
 spec:
-  storageClassName: {{ $global_storage_class_name }}
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -48,7 +46,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: config-claim
 spec:
-  storageClassName: {{ $global_storage_class_name }}
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -62,12 +60,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: runtime-logs-claim
 spec:
-  storageClassName: {{ $global_storage_class_name }}
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:
       storage: 5Gi
-
-{{- end }}
