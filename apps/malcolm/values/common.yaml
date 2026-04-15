@@ -334,3 +334,13 @@ pcap_live:
 #   # Bootstrap broker or a comma-separated list of broker values (IP:PORT in both cases)
 #   brokers: "kafka.local:9091"
 #   topic: "zeek"  
+
+
+### ONLY FOR LOCAL
+persistence:
+  pcap:
+    accessMode: ReadWriteOnce # (Changed from ReadWriteMany)
+  zeek:
+    accessMode: ReadWriteOnce
+  config:
+    accessMode: ReadWriteOnce
