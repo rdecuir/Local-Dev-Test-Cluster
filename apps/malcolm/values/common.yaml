@@ -306,3 +306,9 @@ pcap_live:
 storage:
   development: ~
   production: ~
+
+nginx:
+  ssl: false
+
+nginx_env:
+  NGINX_SSL: "false"
