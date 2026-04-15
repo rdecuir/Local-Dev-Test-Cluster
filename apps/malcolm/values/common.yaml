@@ -300,11 +300,27 @@ pcap_live:
 #   topic: "zeek"  
 
 
-### ONLY FOR LOCAL
-persistence:
-  pcap:
-    accessMode: ReadWriteOnce # (Changed from ReadWriteMany)
-  zeek:
-    accessMode: ReadWriteOnce
-  config:
-    accessMode: ReadWriteOnce
+storage:
+  # Default storage class is defined by `storage_class_name` above.
+  # Individual persistent volume claims can override the class using `classNameOverride`.
+  development:
+    pcap_claim:
+      size: 5Gi
+      classNameOverride: ""
+      accessMode: ReadWriteOnce # <-- ADDED
+    zeek_claim:
+      size: 5Gi
+      classNameOverride: ""
+      accessMode: ReadWriteOnce # <-- ADDED
+    suricata_claim:
+      size: 5Gi
+      classNameOverride: ""
+      accessMode: ReadWriteOnce # <-- ADDED
+    config_claim:
+      size: 5Gi
+      classNameOverride: ""
+      accessMode: ReadWriteOnce # <-- ADDED
+    runtime_logs_claim:
+      size: 5Gi
+      classNameOverride: ""
+      accessMode: ReadWriteOnce # <-- ADDED
