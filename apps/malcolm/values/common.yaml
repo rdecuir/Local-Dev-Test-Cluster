@@ -202,29 +202,17 @@ logstash:
     batch_size: 75
     ordered: false
 
+### WARNING
+# If you are just tossing random PCAPs in to see how the traffic flows and you don't
+# have a massive, pre-built database mapping every IP address to a physical computer 
+# in an office, NetBox is dead weight.
 netbox:
   # Mode of NetBox integration. Options:
   #   - `local`    : use the embedded NetBox instance
   #   - `remote`   : connect to an external NetBox instance
   #   - `disabled` : do not use NetBox
-  mode: "local"
+  mode: "disabled"
 
-  # Enable enrichment of data from NetBox
-  enrichment: true
-  netbox_default_site: "Malcolm"
-  netbox_auto_populate: true
-  netbox_cache_size: "10000"
-  netbox_cache_ttl: "300"
-  netbox_auto_populate_subnets: ""
-
-  # URL of the remote NetBox instance (only used if `mode` is `remote`)
-  url: ""
-
-  # API token for the remote NetBox instance (only used if `mode` is `remote`)
-  netbox_remote_token: ""
-
-  # Reverse proxy URL for CSRF protection. Leave blank if not using a reverse proxy.
-  csrf_trusted_origins: https://malcolm.vp.bigbang.dev
 
 postgres:
   enabled: true
