@@ -107,17 +107,14 @@ auth:
 
 opensearch:
   enabled: false
-  url: https://opensearch.opensearch:9200
-  dashboards_url: http://opensearch-dashboards.opensearch:5601/dashboards
-  development:
-    java_memory: -Xmx10g -Xms10g -Xss256k
-    cluster_max_shards_per_node: 1000
-  production:
-    java_memory: -Xmx32g -Xms32g -Xss256k
-    cluster_max_shards_per_node: 2500
 
 external_elasticsearch:
-  enabled: false
+  enabled: true
+  url: https://opensearch.opensearch:9200
+  dashboards_url: http://opensearch-dashboards.opensearch:5601/dashboards
+
+  username: "admin"
+  password: "admin"
 
 # Shared environment variables for both Elasticsearch and OpenSearch
 siem_env:
