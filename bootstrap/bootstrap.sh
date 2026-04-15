@@ -135,6 +135,7 @@ usage() {
     echo -e "${YELLOW}Usage:${NC} $0 {up|down} [dev|istio]"
     echo "       up      - Create cluster and optionally install API Gateway (default: gateway)"
     echo "       down    - Delete the cluster"
+    echo "       update  - Update Argo CD apps"
     exit 1
 }
 
@@ -144,6 +145,9 @@ case "$1" in
         ;;
     down)
         delete_cluster
+        ;;
+    update)
+        deploy_argo_apps
         ;;
     *)
         usage
