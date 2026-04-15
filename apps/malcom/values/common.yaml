@@ -108,7 +108,7 @@ auth:
 opensearch:
   enabled: false
   url: https://opensearch.opensearch:9200
-  dashboards_url: http://opensearch.opensearch:5601/dashboards
+  dashboards_url: http://opensearch-dashboards.opensearch:5601/dashboards
   development:
     java_memory: -Xmx10g -Xms10g -Xss256k
     cluster_max_shards_per_node: 1000
