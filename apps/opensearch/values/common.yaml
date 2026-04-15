@@ -1,0 +1,31 @@
+cluster:
+  dashboards:
+    opensearchCredentialsSecret: {}
+    tls:
+      enabled: false
+      secret: {}
+  security:
+    config:
+      adminCredentialsSecret:
+        name: opensearch-admin-credentials
+    tls:
+      transport:
+        generate: true
+        perNode: true
+      http:
+        enabled: false
+  ingress:
+    dashboards:
+      enabled: true
+      className: traefik
+      annotations:
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      hosts:
+      - host: opensearch.localhost
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - opensearch.localhost
