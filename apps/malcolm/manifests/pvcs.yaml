@@ -6,7 +6,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: pcap-claim
 spec:
-  storageClassName: {{ default $global_storage_class_name }}
+  storageClassName: {{ $global_storage_class_name }}
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -20,7 +20,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: zeek-claim
 spec:
-  storageClassName: {{ default $global_storage_class_name }}
+  storageClassName: {{ $global_storage_class_name }}
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -34,7 +34,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: suricata-claim-offline
 spec:
-  storageClassName: {{ default $global_storage_class_name }}
+  storageClassName: {{ $global_storage_class_name }}
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -48,7 +48,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: config-claim
 spec:
-  storageClassName: {{ default $global_storage_class_name .config_claim.classNameOverride }}
+  storageClassName: {{ $global_storage_class_name }}
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -62,7 +62,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: runtime-logs-claim
 spec:
-  storageClassName: {{ default $global_storage_class_name }}
+  storageClassName: {{ $global_storage_class_name }}
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
