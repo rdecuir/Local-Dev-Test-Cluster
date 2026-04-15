@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opensearch-operator
+  namespace: argocd
+spec:
+  project: default                                # Reference to your AppProject
+  destination:
+    server: https://kubernetes.default.svc        # In-cluster Kubernetes API
+    namespace: opensearch-operator                           # Target namespace for the app
+  
+  sources:
+    - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
+      targetRevision: main
+      ref: values
+
+    - repoURL: https://opensearch-project.github.io/opensearch-k8s-operator/
+      chart: opensearch-operator
+      targetRevision: 3.0.1
+      helm:
+        ignoreMissingValueFiles: true
+        valueFiles:
+          - $values/apps/opensearch-operator/values/common.yaml
+
+  syncPolicy:
+    automated:
+      prune: true                                # Delete resources no longer defined
+      selfHeal: true                             # Reapply if drift is detected
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
