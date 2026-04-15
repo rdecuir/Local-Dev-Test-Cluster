@@ -1,0 +1,336 @@
+is_production: false
+
+# Enable Kubernetes NetworkPolicy resources to control pod ingress and egress traffic.
+# When `true`, the chart creates default policies that restrict external access while allowing
+# internal communication (and optional exceptions for Istio or external Elasticsearch).
+enable_network_policies: false
+
+# Determines how network traffic is captured and processed.
+# Set to `pipeline` to have Zeek and Suricata ingest PCAP data streamed from Arkime.
+capture_mode: pipeline
+
+cluster:
+  # Set to a CIDR mask that covers all the cluster nodes.
+  node_cidr: "10.0.0.0/8"
+
+# Label used by the _helpers.tpl scaling function to count nodes.
+# The total number of nodes with this label determines the number of replicas.
+# WARNING: If no nodes have this label, logstash replicas will be set to 0.
+node_count_label:
+  key: cnaps.io/node-type
+  value: Tier-1
+
+# Configuration for Custom CA Trust
+# Specifies the name of a ConfigMap containing PEM-encoded CA certificates to be 
+# trusted by the container OS.
+#
+# MECHANISM:
+# 1. This ConfigMap is mounted to '/var/local/ca-trust/configmap' inside the container.
+# 2. The entrypoint script ('docker-uid-gid-setup.sh') detects the 'PUSER_CA_TRUST' 
+#    environment variable pointing to this location.
+# 3. On startup, the script scans this directory, copies any certificates found 
+#    into the OS trust store, and runs 'update-ca-trust' / 'update-ca-certificates'.
+#
+# REQUIREMENTS:
+# - The ConfigMap keys (filenames) typically should end in .crt or .pem.
+# - The values must be valid PEM-encoded certificate data.
+# - If set to "var-local-catrust" (default), the chart creates an empty placeholder
+#   configmap. If set to another name, will search for certificates within a ConfigMap
+#   of that name and import/mount them accordingly.
+ca_trust_configmap_name: "var-local-catrust"
+
+# The StorageClass used for persistent volumes. Defaults to `local-path` (Local Path Provisioner).
+# If your cluster doesn't support this, set `storage_class_name` to another class that supports
+# ReadWriteMany. You can also override it at install time, e.g.:
+#   helm install --set "storage_class_name=nfs-client"
+storage_class_name: local-path
+
+image:
+  repository: ghcr.io/idaholab/malcolm
+  pullPolicy: IfNotPresent
+
+  # Overrides for the container image tags (default is the chart `appVersion` from Chart.yaml).
+  # Only set this if you need a different version than the one specified in Chart.yaml.
+  api_container_override: ""
+  arkime_container_override: ""
+  dashboards_container_override: ""
+  dashboards_helper_container_override: ""
+  dirinit_container_override: ""
+  filebeat_container_override: ""
+  filescan_container_override: ""
+  freq_container_override: ""
+  htadmin_container_override: ""
+  keycloak_container_override: ""
+  logstash_container_override: ""
+  netbox_container_override: ""
+  nginx_container_override: ""
+  opensearch_container_override: ""
+  pcap_capture_container_override: ""
+  pcap_monitor_container_override: ""
+  postgres_container_override: ""
+  valkey_container_override: ""
+  strelka_backend_container_override: ""
+  strelka_frontend_container_override: ""
+  strelka_manager_container_override: ""
+  suricata_container_override: ""
+  upload_container_override: ""
+  zeek_container_override: ""
+
+auth:
+  username: malcolm
+
+  # Password for HTTP basic auth login, generated with `openssl passwd -1 <your password>`
+  # default openssl_password is "malcolm" 
+  openssl_password: "$1$xhZ5v90R$qQmoPuMUb1XAKitK0FoqO."
+
+  # (The same) password for HTTP basic auth login, generated with `htpasswd -bnB <username> <password>`
+  # default htpass_cred is malcolm:malcolm
+  htpass_cred: "malcolm:$2y$05$G68ph4JvfyQu77luvKG77OvuKgeEgwPPtJk07L5iqwkifrLxRo1qi"
+
+  existingSecret: ""
+  usernameKey: "username"
+  opensslPassKey: "openssl_password"
+  htpassCredKey: "htpass_cred"
+
+  # Internal password hash secret for Arkime viewer cluster (see https://arkime.com/settings#passwordSecret)
+  arkime_password: malcolm
+
+  # If the Arkime WISE plugin is in use, this sets the configuration PIN for the WISE GUI
+  # Users should change this value if using the WISE plugin GUI
+  arkime_wise_pin: WISE2019
+
+  # Authentication mode for accessing services. Options:
+  #   - `basic` : htadmin auth
+  #   - `keycloak` : embedded Keycloak
+  #   - `keycloak_remote` : external Keycloak instance
+  mode: "basic"
+
+opensearch:
+  enabled: false
+  url: https://opensearch.opensearch:9200
+  dashboards_url: http://opensearch.opensearch:5601/dashboards
+  development:
+    java_memory: -Xmx10g -Xms10g -Xss256k
+    cluster_max_shards_per_node: 1000
+  production:
+    java_memory: -Xmx32g -Xms32g -Xss256k
+    cluster_max_shards_per_node: 2500
+
+external_elasticsearch:
+  enabled: false
+
+# Shared environment variables for both Elasticsearch and OpenSearch
+siem_env:
+
+  # OpenSearch/Elasticsearch index patterns and timestamp fields
+  logstash_override:
+
+    # Enable this to modify the Logstash Elasticsearch/Opensearch output plugin
+    # to point to an ILM rollover alias. The ILM policy and rollover_alias must
+    # be defined outside of this deployment for correct operation.
+    enabled: false
+    ilm_policy: nta
+
+    # Rollover aliases must match patterns in logstash_override.yml
+    rollover_alias_zeek: malcolm_network_zeek
+    rollover_alias_suricata: malcolm_network_suricata
+    rollover_alias_beats: malcolm_beats
+
+    # Default Beats pipeline and ILM policy
+    default_beats_pipeline: sensor-status
+    ilm_beats_policy: logs
+
+    # Search aliases
+    search_alias: malcolm_network
+    other_search_alias: ""
+
+    # Index settings
+    number_of_shards: "2"
+    number_of_replicas: "1"
+
+  # Index pattern for network traffic logs (e.g., Zeek logs, Suricata alerts)
+  malcolm_network_index_pattern: "arkime_sessions3-*"
+
+  # Default time field for network traffic logs in Logstash and Dashboards
+  malcolm_network_index_time_field: "firstPacket"
+
+  # Suffix used for network traffic indices
+  # Supports Ruby strftime strings in %{} (e.g., hourly: %{%y%m%dh%H}, daily: %{%y%m%d}, weekly: %{%yw%U}, monthly: %{%ym%m})
+  # Supports expanding dot-delimited field names in {{ }} (e.g., {{event.provider}}%{%y%m%d})
+  malcolm_network_index_suffix: "%{%y%m%d}"
+
+  # Index pattern for other logs (e.g., nginx, Beats, Fluent Bit)
+  malcolm_other_index_pattern: "malcolm_beats_*"
+
+  # Default time field for other logs
+  malcolm_other_index_time_field: "@timestamp"
+
+  # Suffix for other logs (same rules as `malcolm_network_index_suffix`)
+  malcolm_other_index_suffix: "%{%y%m%d}"
+
+  # Index pattern specifically used by Arkime (usually matches `malcolm_network_index_pattern`)
+  arkime_network_index_pattern: "arkime_sessions3-*"
+
+  # Default time field for Arkime session indices
+  arkime_network_index_time_field: "firstPacket"
+
+  # If specified, overrides index.max_result_window which defines the maximum value of from + size for searches of the network data
+  #   index, where from is the starting index to search from, and size is the number of results to return. CAUTION: increasing
+  #   this value beyond its baked-in default (10000) may result may negatively impact performance.
+  malcolm_index_max_result_window: ""
+
+  # Optional: default pipeline for templates
+  malcolm_template_default_pipeline: ""
+  malcolm_beats_template_default_pipeline: ""
+
+  # Optional: lifecycle parameters for templates
+  malcolm_template_lifecycle_name: ""
+  malcolm_template_lifecycle_rollover_alias: ""
+  malcolm_beats_template_lifecycle_name: ""
+  malcolm_beats_template_lifecycle_rollover_alias: ""
+
+logstash:
+  # Number of Logstash instances is determined by the number of nodes in your Kubernetes cluster.
+  development:
+    # Java memory settings for Logstash (heap size and stack size)
+    java_memory: -Xmx3g -Xms3g -Xss2048k
+
+    # Logstash pipeline tuning parameters
+    # See: https://www.elastic.co/guide/en/logstash/current/tuning-logstash.html
+    workers: 2
+    batch_delay: 50
+    batch_size: 75
+    ordered: false
+
+netbox:
+  # Mode of NetBox integration. Options:
+  #   - `local`    : use the embedded NetBox instance
+  #   - `remote`   : connect to an external NetBox instance
+  #   - `disabled` : do not use NetBox
+  mode: "local"
+
+  # Enable enrichment of data from NetBox
+  enrichment: true
+  netbox_default_site: "Malcolm"
+  netbox_auto_populate: true
+  netbox_cache_size: "10000"
+  netbox_cache_ttl: "300"
+  netbox_auto_populate_subnets: ""
+
+  # URL of the remote NetBox instance (only used if `mode` is `remote`)
+  url: ""
+
+  # API token for the remote NetBox instance (only used if `mode` is `remote`)
+  netbox_remote_token: ""
+
+  # Reverse proxy URL for CSRF protection. Leave blank if not using a reverse proxy.
+  csrf_trusted_origins: https://malcolm.vp.bigbang.dev
+
+postgres:
+  enabled: true
+
+  # Hostname of the PostgreSQL service
+  host: postgres
+
+  # Default PostgreSQL password
+  password: "ChangeMe"
+
+  # Database names for applications
+  netbox_db_name: "netbox"
+  keycloak_db_name: "keycloak"
+
+  # Set to `true` if using a custom database for NetBox
+  is_custom: false
+
+  # Create extra secrets for a custom database.
+  # The same password value will be used for empty attributes.
+  extra_secrets: [{}]
+
+  # Example of extra secrets:
+  # - postgresql-secret:
+  #     username: netbox
+  #     password: ""
+  # - pgpool-secret:
+  #     adminUsername: netbox-pgpool
+  #     adminPassword: ""
+
+ingress:
+  enabled: true
+  className: traefik
+  nginxProxyBufferBypass: true
+  additionalAnnotations: {}
+  specRules:
+    rules:
+      - http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: nginx-proxy
+                  port:
+                    number: 80
+        host: malcolm.local
+  specTls:
+    tls:
+      - hosts:
+          - malcolm.local
+
+# Suricata live is enabled by default and will listen on `pcap_iface` defined under `pcap_capture_env`
+# If disabled, PCAPs can still be uploaded using the Malcolm offline upload functionality.
+suricata_live:
+  enabled: false
+
+dashboards_helper_env:
+  opensearch_index_size_prune_limit: 0
+  opensearch_index_size_prune_name_sort: false
+  dashboards_prefix: "Malcolm"
+  dashboards_dark_mode: true
+  dashboards_timepicker_from: "now-7d"
+  dashboards_timepicker_to: "now"
+  # The base URL of the Malcolm instance (e.g., https://malcolm.home.arpa), only used
+  # where a remote Kibana instance needs absolute paths to request, for example, an extracted
+  # file download or some other Malcolm-hosted asset.
+  malcolm_url: https://malcolm.vp.bigbang.dev
+
+suricata_offline:
+  development:
+    suricata_auto_analyze_pcap_threads: 0
+    suricata_auto_analyze_pcap_processes: 1
+  production:
+    suricata_auto_analyze_pcap_threads: 0
+    suricata_auto_analyze_pcap_processes: 10
+
+# Zeek live is enabled by default and will listen on `pcap_iface` defined under `pcap_capture_env`
+# If disabled, PCAPs can still be uploaded using the Malcolm offline upload functionality.
+zeek_live:
+  enabled: false
+
+# Only affects the Zeek offline deployment
+# NOTE: the zeek_intel_refresh_on_startup and zeek_intel_refresh_cron_expression 
+#       is also applied to the zeek remote live sensors.
+zeek_offline:
+  # Refresh Zeek Intel data at startup
+  zeek_intel_refresh_on_startup: "true"
+  zeek_disable_intel_offline: "false"
+
+  # Cron expression for refreshing Zeek Intel data
+  zeek_intel_refresh_cron_expression: "0 */12 * * *"
+
+  # Number of Zeek processes analyzing uploaded PCAPs concurrently
+  development:
+    zeek_auto_analyze_pcap_threads: 1
+  production:
+    zeek_auto_analyze_pcap_threads: 3
+
+arkime_live:
+  enabled: false
+
+pcap_live:
+  enabled: false
+
+# kafka:
+#   enabled: false
+#   # Bootstrap broker or a comma-separated list of broker values (IP:PORT in both cases)
+#   brokers: "kafka.local:9091"
+#   topic: "zeek"  

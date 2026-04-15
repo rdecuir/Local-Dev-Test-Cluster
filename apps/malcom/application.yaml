@@ -1,27 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: opensearch
+  name: malcolm
   namespace: argocd
 spec:
   project: default                                # Reference to your AppProject
   destination:
     server: https://kubernetes.default.svc        # In-cluster Kubernetes API
-    namespace: opensearch                          # Target namespace for the app
+    namespace: malcolm                          # Target namespace for the app
   
   sources:
     - repoURL: https://github.com/rdecuir/Local-Dev-Test-Cluster
       targetRevision: main
-      path: apps/opensearch/manifest
+      # path: apps/malcolm/manifest
       ref: values
 
-    - repoURL: https://opensearch-project.github.io/opensearch-k8s-operator/
-      chart: opensearch-cluster
-      targetRevision: 3.2.2
+    - repoURL: https://raw.githubusercontent.com/idaholab/Malcolm-Helm/refs/heads/helm-repo/
+      chart: malcolm
+      targetRevision: 26.01.0-1
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
-          - $values/apps/opensearch/values/common.yaml
+          - $values/apps/malcolm/values/common.yaml
 
   syncPolicy:
     automated:
