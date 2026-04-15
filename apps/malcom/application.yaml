@@ -17,7 +17,7 @@ spec:
 
     - repoURL: https://raw.githubusercontent.com/idaholab/Malcolm-Helm/refs/heads/helm-repo/
       chart: malcolm
-      targetRevision: 26.01.0-1
+      targetRevision: 26.01.0
       helm:
         ignoreMissingValueFiles: true
         valueFiles:
