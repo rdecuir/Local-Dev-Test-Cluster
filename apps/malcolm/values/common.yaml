@@ -214,33 +214,9 @@ netbox:
   mode: "disabled"
 
 
+### WARNING nuking so that its "running malcolm open" to avoid users for local demo
 postgres:
-  enabled: true
-
-  # Hostname of the PostgreSQL service
-  host: postgres
-
-  # Default PostgreSQL password
-  password: "ChangeMe"
-
-  # Database names for applications
-  netbox_db_name: "netbox"
-  keycloak_db_name: "keycloak"
-
-  # Set to `true` if using a custom database for NetBox
-  is_custom: false
-
-  # Create extra secrets for a custom database.
-  # The same password value will be used for empty attributes.
-  extra_secrets: [{}]
-
-  # Example of extra secrets:
-  # - postgresql-secret:
-  #     username: netbox
-  #     password: ""
-  # - pgpool-secret:
-  #     adminUsername: netbox-pgpool
-  #     adminPassword: ""
+  enabled: false
 
 ingress:
   enabled: true
