@@ -110,11 +110,11 @@ opensearch:
 
 external_elasticsearch:
   enabled: true
-  url: https://opensearch.opensearch:9200
+  url: http://opensearch.opensearch:9200
   dashboards_url: http://opensearch-dashboards.opensearch:5601/dashboards
 
-  username: "admin"
-  password: "admin"
+  username: "YWRtaW4="
+  password: "YWRtaW4="
 
 # Shared environment variables for both Elasticsearch and OpenSearch
 siem_env:
