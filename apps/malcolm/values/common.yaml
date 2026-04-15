@@ -223,7 +223,9 @@ ingress:
   enabled: true
   className: traefik
   nginxProxyBufferBypass: true
-  additionalAnnotations: {}
+  additionalAnnotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web
   specRules:
     rules:
       - http:
