@@ -222,6 +222,7 @@ postgres:
 ingress:
   enabled: true
   className: traefik
+  ingressClassName: traefik
   nginxProxyBufferBypass: true
   additionalAnnotations:
     kubernetes.io/ingress.class: traefik
