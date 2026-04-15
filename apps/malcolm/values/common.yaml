@@ -116,6 +116,10 @@ external_elasticsearch:
   username: YWRtaW4=
   password: YWRtaW4=
 
+  # Nuke the default Big Bang certificate configurations
+  elastic_cert_name: ""
+  elastic_cert_namespace: ""
+
 # Shared environment variables for both Elasticsearch and OpenSearch
 siem_env:
 
