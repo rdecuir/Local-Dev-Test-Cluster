@@ -317,3 +317,7 @@ nginx_env:
   # This is the big one for "blocked:origin"
   ALLOWED_ORIGINS: "*" 
   NGINX_SERVER_NAME: "malcolm.localhost"
+
+arkime_env:
+  # This tells the Arkime startup script to allow insecure HTTPS connections
+  ARKIME_ELASTICSEARCH_SSL_VERIFY: "false"
