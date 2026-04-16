@@ -312,3 +312,6 @@ nginx:
 
 nginx_env:
   NGINX_SSL: "false"
+  # This is the big one for "blocked:origin"
+  ALLOWED_ORIGINS: "*" 
+  NGINX_SERVER_NAME: "malcolm.local"
