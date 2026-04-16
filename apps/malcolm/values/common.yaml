@@ -120,6 +120,8 @@ external_elasticsearch:
   elastic_cert_name: ""
   elastic_cert_namespace: ""
 
+  external_dashboards_url: http://opensearch.localhost
+
 # Shared environment variables for both Elasticsearch and OpenSearch
 siem_env:
 
