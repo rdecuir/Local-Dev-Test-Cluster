@@ -111,7 +111,7 @@ opensearch:
 external_elasticsearch:
   enabled: true
   url: http://opensearch.opensearch:9200
-  dashboards_url: http://opensearch-dashboards.opensearch:5601/dashboards
+  dashboards_url: http://opensearch-dashboards.opensearch:5601
 
   username: YWRtaW4=
   password: YWRtaW4=
