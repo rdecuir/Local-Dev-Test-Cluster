@@ -321,3 +321,4 @@ nginx_env:
 arkime_env:
   # This tells the Arkime startup script to allow insecure HTTPS connections
   ARKIME_ELASTICSEARCH_SSL_VERIFY: "false"
+  OS_SSL_VERIFY: "false"
