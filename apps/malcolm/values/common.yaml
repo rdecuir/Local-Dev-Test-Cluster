@@ -113,8 +113,8 @@ external_elasticsearch:
   url: http://opensearch.opensearch:9200
   dashboards_url: http://opensearch-dashboards.opensearch:5601
 
-  username: YWRtaW4=
-  password: YWRtaW4=
+  username: admin #YWRtaW4=
+  password: admin #YWRtaW4=
 
   # Nuke the default Big Bang certificate configurations
   elastic_cert_name: ""
