@@ -237,11 +237,11 @@ ingress:
                   name: nginx-proxy
                   port:
                     number: 80
-        host: malcolm.local
+        host: malcolm.localhost
   specTls:
     tls:
       - hosts:
-          - malcolm.local
+          - malcolm.localhost
 
 # Suricata live is enabled by default and will listen on `pcap_iface` defined under `pcap_capture_env`
 # If disabled, PCAPs can still be uploaded using the Malcolm offline upload functionality.
@@ -314,4 +314,4 @@ nginx_env:
   NGINX_SSL: "false"
   # This is the big one for "blocked:origin"
   ALLOWED_ORIGINS: "*" 
-  NGINX_SERVER_NAME: "malcolm.local"
+  NGINX_SERVER_NAME: "malcolm.localhost"
